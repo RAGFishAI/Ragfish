@@ -307,7 +307,7 @@ $(document).ready(function () {
                                 message = message.replace(/\n/g, "<br>");
 
 
-                              
+                           
 
 
                                 // Responce

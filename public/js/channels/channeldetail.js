@@ -287,20 +287,50 @@ $(document).on('click', '#filedelete-btn', function () {
   const urlpar = new URLSearchParams(url)
   pageno = urlpar.get('page')
 
-  $('.deltitle').text('Delete File?')
-  $('.deldesc').text('Are you sure you want to delete this file')
-  $('.delname').text($(this).parents('.f-chn').find('.chname').text())
-  $('#delid').show()
-  $('#delid').attr('data-id', $(this).attr('data-id'))
-  $('#dltCancelBtn').text("Cancel")
-  channelid =$(this).attr('data-channel')
-  if (pageno == null) {
-    $('#delid').attr('href', "/channels/"+channelid+"/deletefile?id=" + $(this).attr('data-id'))
+  console.log("Allow delete", $(this).attr("data-allow"))
 
-  } else {
-    $('#delid').attr('href', "/channels/"+channelid+"/deletefile?id=" + $(this).attr('data-id') + "&page=" + pageno)
+    Allow_del = $(this).attr("data-allow") === "true"
 
-  }
+    if (Allow_del) {
+
+
+
+        $('.deltitle').text('Delete File?')
+        $('.deldesc').text('The Document Already maped in Assistant')
+        $('.delname').text($(this).parents('.f-chn').find('.chname').text())
+        $('#delid').hide()
+        $('#delid').attr('data-id', $(this).attr('data-id'))
+        $('#dltCancelBtn').text("OK")
+        channelid = $(this).attr('data-channel')
+        if (pageno == null) {
+            $('#delid').attr('href', "/channels/" + channelid + "/deletefile?id=" + $(this).attr('data-id'))
+
+        } else {
+            $('#delid').attr('href', "/channels/" + channelid + "/deletefile?id=" + $(this).attr('data-id') + "&page=" + pageno)
+
+        }
+
+
+    }else {
+
+
+
+        $('.deltitle').text('Delete File?')
+        $('.deldesc').text('Are you sure you want to delete this file')
+        $('.delname').text($(this).parents('.f-chn').find('.chname').text())
+        $('#delid').show()
+        $('#delid').attr('data-id', $(this).attr('data-id'))
+        $('#dltCancelBtn').text("Cancel")
+        channelid = $(this).attr('data-channel')
+        if (pageno == null) {
+            $('#delid').attr('href', "/channels/" + channelid + "/deletefile?id=" + $(this).attr('data-id'))
+
+        } else {
+            $('#delid').attr('href', "/channels/" + channelid + "/deletefile?id=" + $(this).attr('data-id') + "&page=" + pageno)
+
+        }
+
+}
 
 
 

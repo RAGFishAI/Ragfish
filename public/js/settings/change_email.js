@@ -129,7 +129,7 @@ $(document).ready(function () {
                 console.log("response", response.pass)
 
                 if (!response.pass) {
-                    $("#password_div").append("<p id='Passerr'>* Password incorrect</p>");
+                    $("#password_div").append("<label id='Passerr' class='error'>* Password incorrect</label>");
                 } else {
                     console.log("else working");
 

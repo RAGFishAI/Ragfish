@@ -68,7 +68,7 @@ Once the project starts successfully, the Ragfish application will run.
 
 You can access the application in your browser using:
 
-http://localhost:<port>
+http://localhost:port
 
 Use the default login credentials to sign in:
 

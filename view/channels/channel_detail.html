@@ -166,11 +166,12 @@
                         </thead>
                         <tbody>
                             {{range .filelist}}
-                            <tr class="[&:last-of-type>td]:border-b-0">
+                            
+                            <tr class="[&:last-of-type>td]:border-b-0">                           
                                 <td width="50%"
                                     class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
                                     <a href="javascript:void(0)" class="flex items-center gap-[12px]">
-                                     
+                                    
                                       
                                         
                                         {{if eq .FileType `pdf`}}
@@ -196,6 +197,7 @@
                                             class="inline-flex items-center gap-[8px] text-sm text-[#28303E] font-medium ms-auto">
                                             <img src="/public/img/Not Synced.svg" alt=""> Sync
                                         </div> -->
+                                        
                                         <el-dropdown class="inline-flex">
                                             <button
                                                 class="inline-flex w-[22px] hover:bg-[#F2F3F5] h-[22px] rounded cursor-pointer [[aria-expanded='true']]:bg-[#F2F3F5] ">
@@ -208,9 +210,9 @@
 
 
                                                     <button command="show-modal" commandfor="delete-modal"
-                                                        id="filedelete-btn" data-id="{{.Id}}" type="button"
+                                                        id="filedelete-btn" data-id="{{.Id}}" data-allow="{{.DeleteId}}" type="button"
                                                         data-channel="{{$channelid}}"
-                                                        class="cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</button>
+                                                        class="filedelete cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</button>
 
                                                 
                                                  
