@@ -1,0 +1,59 @@
+{{template "header" .}}
+{{template "agentheader" .}}
+{{$assistant := .assistant}}
+
+                       <input type="hidden" name="assistantid" id="assistantid" value="{{.assistant.UniqueId}}" >
+                           <input name="csrf" value="{{.csrf}}" type="hidden">
+                        <div class="grow flex flex-col" id="styled-settings" role="tabpanel"
+                            aria-labelledby="settings-tab">
+
+
+                            <div class="md:grid-cols-[238px_1fr] grid ">
+                                <div class="p-[14px_9px] bg-[#FDF9FF] overflow-hidden">
+                                    <a href="/app/{{.assistant.AssistantSlug}}/{{.assistant.UniqueId}}/activitylog"
+                                        class="inline-flex p-[5px_10px] text-[13px] rounded hover:bg-[#FAEEFF] leading-[20px] font-medium text-[#202732] mb-[16px] md:mb-[19px]">
+                                        <img src="/public/img/back.svg" alt=""> Back</a>
+                                    <ul class="max-md:flex gap-[4px] overflow-auto">
+                                         {{range .ChatHistory}}
+                                        <li>
+                                            <a session-id="{{.SessionID}}" href="javascript:void(0)"
+                                                class="chathistorybtn p-[6px_10px] rounded-[8px] text-[13px] leading-[20px] font-normal text-[#3C485E] hover:bg-[#FAEEFF] hover:font-medium hover:text-[#28303E]  [&.active]:bg-[#FAEEFF] [&.active]:text-[#28303E] [&.active]:font-semibold line-clamp-1 max-md:whitespace-nowrap">
+                                                {{.Title}}</a>
+                                        </li>
+                                       
+                                        {{end}}
+                                    </ul>
+                                </div>
+                                <div
+                                    class="grow flex flex-col overflow-auto [scrollbar-width:thin] h-[calc(100vh-209px)]">
+
+                                                 <div class="[&:last-of-type>td]:border-b">
+                                            
+                                            <div
+                                                class="p-[10px_16px] text-[14px] leading-[20px] font-normal text-[#4F607D] border-b border-solid border-[#E0E4EB] ">
+                                             
+                                                <a href="" class="flex items-center gap-[12px] hover:underline">
+                                                    <div
+                                                        class="w-[32px] min-min-w-[32px] h-[32px] rounded-full bg-[#0E6DBD] grid place-items-center">
+                                                        <p
+                                                            class="text-[18px] leading-[27px] font-medium text-[#FFFFFF] !no-underline">
+                                                            {{slice .userinfo.Username 0 1}}</p>
+                                                    </div>
+                                                    <p class="text-[13px] leading-[20px] font-semibold text-[#28303E] usernameval" >
+                                                        {{.userinfo.Username}}</p>
+                                                </a>
+                                            </div>
+                                                 </div>
+                                         
+                                    <div class="w-full mx-auto p-[30px_24px]" id="chatcontainer">
+                                    
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+ {{template "footer" .}}   
+
+ <script src="/public/js/activitylog/useractivity.js"></script>

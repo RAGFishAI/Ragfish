@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div style="text-align: center;">
+    <h1>Welcome to Chat login</h1>
+    <form method="post" id="chatloginform" action="/login_verification">
+        <p>{{.csrf}}</p>
+        <input name="csrf" value="{{.csrf}}" type="hidden">
+    <label for="emailid">Email :</label>
+    <input type="text" name="emailid" id="emailid"><br><br>
+    <label for="password">Password :</label>
+    <input type="password" name="password" id="password"><br><br>
+    <button type="submit">Login</button>
+    </form>
+    </div>
+</body>
+</html>

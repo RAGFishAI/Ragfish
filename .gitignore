@@ -1,0 +1,9 @@
+# Secret file
+
+storage/*
+Files/*
+logs
+.idea
+tailwind-css
+node_modules/
+uploads/

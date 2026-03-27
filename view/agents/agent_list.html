@@ -1,0 +1,30 @@
+{{template "header" .}}
+
+ <div class="p-[35px_16px] min-h-[calc(100dvh-52px)] ">
+                <div class="w-full max-w-[1102px] mx-auto">
+                    <h1 class="text-[24px] leading-[29px] font-bold text-[#202732] mb-[24px] xl:mb-[37px]">Welcome {{.username}}</h1>
+                    <div class="grid grid-cols-[repeat(auto-fill,minmax(268px,1fr))] gap-x-[10px] gap-y-[14px]">
+                        {{range .data}}
+                        <a href="/agents/{{.assistant_title}}" class="p-[16px] md:p-[20px] border border-solid border-[#EBEBEB] rounded-[12px] group">
+                            <div class="flex gap-[8px] items-center mb-[14px]">
+                                <div
+                                    class="w-[42px] h-[42px] border border-solid border-[#EBEBEB] rounded-[8px] min-w-[42px] grid place-items-center">
+                                    <img src="{{.imagepath}}" alt="" class="w-[28px] h-[28px]">
+                                </div>
+                                <h3 class="text-sm leading-[20px] font-semibold text-[#202732]"> {{.assistant_title}}
+                                </h3>
+                                <div class="min-w-[24px] self-start ms-auto">
+                                    <img src="/public/img/add.svg" alt="" class="hidden group-hover:block">
+                                    <img src="/public/img/add-bordered.svg" alt="" class="group-hover:hidden">
+                                </div>
+                            </div>
+                            <p class="text-[12px] leading-[16px] font-normal line-clamp-2 text-[#28303E]"> {{.description}}</p>
+                        </a>
+                         {{end}}
+                
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ {{template "footer" .}}   

@@ -1,0 +1,324 @@
+{{template "header" .}}
+{{$channelid := .channelid}}
+{{$foldername := .foldername}}
+
+<div class="pb-2">
+    <div class="pb-2   w-full m-0 px-[24px] py-[10px] border border-solid border-[#D1DEF5]">
+        <div class="mr-auto flex items-center gap-[6px] overflow-hidden ">
+            <a href="/channels">
+                <h2 class="text-[13px] font-normal leading-[20px] text-[#252525] whitespace-nowrap max-sm:text-xs">
+                    Channel
+                </h2>   
+            </a>
+            <img src="/public/img/arrow-right-s-line 1.svg" alt="arrow-category">
+            <h2 class="text-[13px] font-medium hover leading-[20px] text-[#252525] whitespace-nowrap max-sm:text-xs">
+            {{$foldername}}
+            </h2>
+        </div>
+    </div>
+
+<div class="min-h-[calc(100dvh-52px)] flex flex-col overflow-auto">
+    <div class="p-[20px_24px] border-b border-solid border-[#E7E9EF] flex items-start gap-[20px] max-sm:flex-col">
+        <div class=" flex items-start gap-[20px]">
+
+            <div>
+                <h2 class="text-[18px] leading-[20px] font-bold text-[#202732] mb-[10px]">{{.Channeldata.ChannelName}}
+                </h2>
+                <p class="text-[13px] leadnig-[20px] font-normal text-[#28303E] max-w-[90%]">
+                    {{.Channeldata.ChannelDescription}}</p>
+            </div>
+        </div>
+
+        <!-- <div class="ms-auto">
+                        <a href=""
+                            class="dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] ">
+                            <img src="/public/img/edit.svg" alt=""> Edit</a>      
+                    </div> -->
+    </div>
+
+    <div class="md:grid-cols-[238px_1fr] grid ">
+
+        <div class="p-[31px_9px] bg-[#FDF9FF] overflow-hidden">
+
+            <div class="flex items-center gap-[4px] mb-[14px]">
+                <h3 class="text-sm font-bold text-[#28303E]">Folder Collections</h3>
+                <button command="show-modal" commandfor="create-folder-dialog"
+                    class="folderadd ms-auto p-[4px] cursor-pointer rounded-sm hover:bg-[#ccc]"> <img
+                        src="/public/img/plus.svg" alt=""> </button>
+            </div>
+            {{ $filecountrue :=0}}
+            {{if .filelist}}
+            {{$filecountrue =1}}
+            {{end}}
+            <div class="w-full ">
+                {{$CurrentFolderId :=.folderid }}
+                {{if .folderList}}
+                <ul class="">
+
+                    {{range .folderList}}
+                    <!-- Item -->
+                    <li class="relative group">
+                        <div
+                            class="{{if eq .Id $CurrentFolderId}}bg-[#F9EEFF]{{end}} flex items-center justify-between cursor-pointer group-hover:bg-[#F9EEFF] rounded-[8px] active:bg-[#F9EEFF] transition">
+                            <!-- Left content -->
+                            <a href="/channels/{{$channelid}}?folderid={{.Id}}" class="absolute inset-0 w-full h-full z-1"></a>
+                            <div class="flex items-center gap-3 p-[6px_10px]">
+                                <img src="/public/img/folder.svg" alt="">
+                                <span class="text-[#3C485E] text-[13px] group-hover:text-[#28303E]">
+                                    {{.FolderName}}
+                                </span>
+                            </div>
+                            <!-- Ellipsis -->
+                            <div class="relative inline-flex pe-1 z-2">
+                                <el-dropdown class="inline-flex">
+                                    <button
+                                        class="inline-flex w-[22px] hover:bg-[#F2F3F5] h-[22px] rounded cursor-pointer [[aria-expanded='true']]:bg-[#F2F3F5] ">
+                                        <img src="/public/img/table-menu.svg" alt="">
+                                    </button>
+
+                                    <el-menu anchor="bottom end" popover
+                                        class="w-[150px] origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                                        <div class="py-1">
+                                            <button command="show-modal" commandfor="create-folder-dialog" type="button"
+                                                data-id="{{.Id}}" data-name="{{.FolderName}}"
+                                                class="cursor-pointer  text-start w-full hover:bg-gray-100 hover:text-gray-900  foldereditbtn block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Rename</button>
+
+                                            {{if eq $filecountrue 1}}
+                                            <button command="show-modal" commandfor="delete-modal" id="delete-toast-btn"
+                                                data-id="{{.Id}}" data-channel="{{$channelid}}"
+                                                class="delete-toast-btn cursor-pointer  text-start w-full hover:bg-gray-100 hover:text-gray-900  block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</a>
+                                                {{else}}
+                                                <button command="show-modal" commandfor="delete-modal" id="delete-btn"
+                                                    data-id="{{.Id}}" type="button" data-channel="{{$channelid}}"
+                                                    class="folderdelete cursor-pointer  text-start w-full hover:bg-gray-100 hover:text-gray-900  block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</a>
+                                                    {{end}}
+                                        </div>
+                                    </el-menu>
+                                </el-dropdown>
+                            </div>
+                        </div>
+                    </li>
+                    {{end}}
+
+
+                </ul>
+                {{end}}
+
+            </div>
+
+
+        </div>
+
+        <div class="grow flex flex-col overflow-auto [scrollbar-width:thin] h-[calc(100vh-162px)]">
+            {{if eq .folderid 0}}
+
+               <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+                <img src="/public/img/add-folder.svg" alt="">
+                <h3 class="py-[30px_12px] text-[20px] font-semibold text-[#202124]">Create Folder</h3>
+                <p class="text-base font-normal text-[#4F607D] mb-[20px]">Organize your content by creating a new
+                    folder. Add PDFs, documents, or other files here to keep your channel structured and easy to manage.
+                </p>
+
+
+
+                <button command="show-modal" commandfor="create-folder-dialog"
+                    class="folderadd dark-btn h-[33px] !px-[16px] !w-[210px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] ">
+                    <img src="/public/img/plus-white.svg" alt=""> Create Folder</button>
+
+            </div>
+{{else}}
+            <div class="p-[30px_24px]">
+
+                <div class="flex justify-between">
+
+                    {{if .filelist}}
+                    <h2 class="flex items-center mb-[24px] text-[18px] font-semibold text-[28303E] gap-[14px]"> <img
+                            src="/public/img/folder-lg.svg" alt=""> {{$foldername}}</h2>
+                    <div class="ms-auto">
+                        <button id="uploadBtn"
+                            class="dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] ">
+                            + Upload</button>
+                        <input type="hidden" name="csrf" value="{{.csrf}}">
+                        <input type="hidden" id="Channeldata" name="Channeldata" value="{{.Channeldata.Id}}">
+                        <input type="hidden" id="foldernamedata" name="foldernamedata" value="{{.folderid}}">
+                        <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx" />
+                    </div>{{end}}
+                </div>
+
+
+                {{if .filelist}}
+                <div class="rounded-[8px] border border-solid border-[#D1DEF5] overflow-auto">
+                    <table class="w-full overflow-auto min-w-[768px]">
+                        <thead>
+                            <tr class="[&:last-of-type>td]:border-b-0">
+                                <th
+                                    class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                    Name</th>
+                                <th
+                                    class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                    Upload Date</th>
+
+                                <th
+                                    class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .filelist}}
+                            <tr class="[&:last-of-type>td]:border-b-0">
+                                <td width="50%"
+                                    class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                    <a href="javascript:void(0)" class="flex items-center gap-[12px]">
+                                     
+                                      
+                                        
+                                        {{if eq .FileType `pdf`}}
+                                        <div class="w-[32px] min-w-[32px] h-[32px]  grid place-items-center">
+                                            <img src="/public/img/pdf.svg" alt="">
+                                        </div>
+                                        {{else}}
+                                          <div
+                                                        class="w-[32px] min-w-[32px] h-[32px]  grid place-items-center">
+                                                        <img src="/public/img/word.svg" alt="">
+                                                    </div>{{end}}
+                                        <p class="text-[14px] leading-[20px] font-normal text-[#202732]">
+                                            {{.FileName}}</p>
+                                    </a>
+                                </td>
+                                <td
+                                    class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#63789C] border-b border-solid border-[#E0E4EB] ">
+                                    {{.DateString}}</td>
+                                <td
+                                    class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                    <div class="flex gap-[14px] sm:gap-[40px] items-center">
+                                        <!-- <div
+                                            class="inline-flex items-center gap-[8px] text-sm text-[#28303E] font-medium ms-auto">
+                                            <img src="/public/img/Not Synced.svg" alt=""> Sync
+                                        </div> -->
+                                        <el-dropdown class="inline-flex">
+                                            <button
+                                                class="inline-flex w-[22px] hover:bg-[#F2F3F5] h-[22px] rounded cursor-pointer [[aria-expanded='true']]:bg-[#F2F3F5] ">
+                                                <img src="/public/img/table-menu.svg" alt="">
+                                            </button>
+
+                                            <el-menu anchor="bottom end" popover
+                                                class="w-[150px] origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                                                <div class="py-1">
+
+
+                                                    <button command="show-modal" commandfor="delete-modal"
+                                                        id="filedelete-btn" data-id="{{.Id}}" type="button"
+                                                        data-channel="{{$channelid}}"
+                                                        class="cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</button>
+
+                                                
+                                                 
+                                                    <button id="filedownload-btn" data-id="{{.Id}}" type="button"
+                                                        data-channel="{{$channelid}}"
+                                                        class="cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Download</button>
+                                            
+
+                                                </div>
+                                            </el-menu>
+                                        </el-dropdown>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{end}}
+
+                        </tbody>
+                    </table>
+                </div>
+                {{else}}
+
+                <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+                    <img src="/public/img/add-folder.svg" alt="">
+                    <h3 class="py-[30px_12px] text-[20px] font-semibold text-[#202124]">Add Content Document</h3>
+                    <p class="text-base font-normal text-[#4F607D] mb-[20px]">  Upload your first PDF, DOC, or DOCX document here. 
+    Organize files in this folder for easy access and management.</p>
+                    <button id="uploadBtn"
+                        class="dark-btn h-[33px] !px-[16px] !w-[210px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] ">
+                        <img src="/public/img/plus-white.svg" alt=""> Add Content Document</button>
+                    <input type="hidden" name="csrf" value="{{.csrf}}">
+                    <input type="hidden" id="Channeldata" name="Channeldata" value="{{.Channeldata.Id}}">
+                    <input type="hidden" id="foldernamedata" name="foldernamedata" value="{{.folderid}}">
+
+                    <input type="file" id="fileInput" class="hidden" accept=".pdf,.doc,.docx" />
+                </div>
+                {{end}}
+            </div>
+
+          
+         
+            {{end}}
+
+        </div>
+    </div>
+
+
+</div>
+</section>
+
+<!-- Create Folder modal -->
+<el-dialog>
+    <dialog id="create-folder-dialog" aria-labelledby="create-folder-dialog-title"
+        class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+
+        <el-dialog-backdrop
+            class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in">
+        </el-dialog-backdrop>
+
+        <div tabindex="0"
+            class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center">
+
+            <el-dialog-panel class="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all 
+               data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out 
+               data-leave:duration-200 data-leave:ease-in sm:my-8 w-full sm:max-w-[636px] 
+               data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+
+
+                <div class="flex items-center p-[30px_30px_30px_30px] max-lg:p-[24px_16px_16px] ">
+                    <h2
+                        class="cfoldertext text-[24px] max-lg:text-[16px] max-lg:leading-[16px] leading-[20px] font-semibold text-[#202124]">
+                        Create Folder</h2>
+                    <button command="close" commandfor="create-folder-dialog"
+                        class="cancelbtn ms-auto ps-[10px] cursor-pointer">
+                        <img src="/public/img/close.svg" alt=""> </button>
+                </div>
+                <form action="/channels/createfolder" method="post" id="createfolder">
+                    <input type="hidden" name="csrf" value="{{.csrf}}">
+                    <input type="hidden" name="channelid" id="channelid" value="{{.channelid}}">
+                    <input type="hidden" id="folderid" name="folderid" value="{{.folderid}}">
+                    <div class="px-[30px] pb-[30px]">
+
+                        <div class="mb-[20px]">
+                            <label for=""
+                                class="text-sm leading-[22px] font-semibold text-[#202732] mb-[10px] block">Collection
+                                Folder name</label>
+                            <input type="text" placeholder="Folder Name" name="foldername" id="foldername"
+                                class="border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[48px] block w-full outline-none focus:border-[#704C9B] mb-[26px]">
+                        </div>
+
+
+                    </div>
+
+                    <div class="flex gap-[10px] justify-end w-full pb-[30px] px-[30px]">
+                        <button command="close" commandfor="create-folder-dialog" type="button"
+                            class="cancelbtn bg-[#E0E4EB] h-[40px] max-w-max !px-[14px] flex items-center gap-[4px] rounded-[8px] text-base leading-[20px] font-normal text-[#28303E] cursor-pointer border border-solid border-[#E0E4EB] hover:border-[#704C9B]">
+                            Cancel</button>
+                        <button id="Save"
+                            class="savebtn dark-btn h-[40px] max-w-max !px-[14px] flex gap-[4px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] ">
+                            Save
+                        </button>
+                    </div>
+                </form>
+
+            </el-dialog-panel>
+        </div>
+    </dialog>
+</el-dialog>
+{{template "footer" .}}
+
+<script src="/public/js/channels/channeldetail.js"></script>

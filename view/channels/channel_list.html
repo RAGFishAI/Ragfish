@@ -1,0 +1,266 @@
+{{template "header" .}}
+{{$Translate := .translate}}
+<div class="p-[35px_24px] min-h-[calc(100dvh-52px)] ">
+    <div class="w-full">
+     
+        </div>
+        <div class="flex gap-[16px] justify-between mb-[24px]">  
+            <div>    
+                
+            <h1 class="text-[24px] leading-[20px] font-bold text-[#202732] mb-[10px]">Channel
+                Data
+            </h1>
+            <p class="text-[13px] leading-[20px] font-medium text-[#28303E]">Manage and organize different types of content in one centralized place.
+</p>
+          </div>
+            <button command="show-modal" commandfor="create-channel-dialog"
+                class="createchanbtn dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] max-w-max ms-auto">
+                <img src="/public/img/add-channels.svg" alt="">Create channels</button>
+
+        </div>
+        <div class="mb-[50px] flex items-center gap-[24px] justify-between">
+            <div class="flex items-center relative w-full max-w-[337px]">
+                <img src="/public/img/search.svg" alt="search" class="absolute left-[12px] w-[16px]">
+                <form action="/channels" method="get" class="filterform " autocomplete="off">
+                    <input type="text" placeholder="Search channels" name="keyword" id="search"
+                        value="{{if .filter.Keyword}}{{.filter.Keyword}}{{end}}"
+                        class="bg-[#FFFFFF] border border-solid border-[#C1C9D7] flex w-full h-[36px] rounded-[4px] outline-none focus:border-[#704C9B] h-[36px] ps-[38px] text-[14px] leading-[17px] italic font-normal placeholder:text-[#3C485E]">
+                </form>
+            </div>
+
+
+        </div>
+        
+        {{if .channelslist}}
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(327px,1fr))] gap-x-[10px] gap-y-[14px]">
+
+            {{range .channelslist}}
+            <div href="/channels/{{.Id}}"
+                class="p-[16px] flex flex-col justify-between md:p-[20px_20px_14px_20px] border border-solid border-[#EBEBEB] rounded-[12px] group">
+                <div class="flex items-center gap-[16px] justify-between">
+                    <div>
+                       <a href="/channels/{{.Id}}{{if .FirstFolderId}}?folderid={{.FirstFolderId}}{{end}}"  class="hover:underline"><h3 class="text-base leading-[20px] font-semibold text-[#202732] mb-[6px]"> {{.ChannelName}}</a>
+                        </h3>
+                    </div>
+
+                    <el-dropdown class="inline-flex" style="--button-width: 22px;">
+                        <button
+                            class="inline-flex w-[22px] hover:bg-[#D3D3D3] h-[24px] rounded cursor-pointer [[aria-expanded='true']]:bg-[#D3D3D3] "
+                            id="menu-button-13" type="button" aria-haspopup="menu" aria-controls="menu-12"
+                            aria-expanded="false" popovertarget="menu-12">
+                            <img src="/public/img/table-menu.svg" alt="">
+                        </button>
+
+                        <el-menu anchor="bottom end" popover="manual"
+                            class="w-[150px] origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                            id="menu-12" role="menu">
+                            <div class="py-1">
+                               <button  command="show-modal" commandfor="create-channel-dialog" id="editbtn" type="button"
+                                    data-id="{{.Id}}" data-title="{{.ChannelName}}" data-desc="{{.ChannelDescription}}"
+                                    class="cursor-pointer w-full block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100  focus:text-gray-900 text-start hover:bg-gray-100 hover:text-gray-900 focus:outline-hidden">Edit</button>
+                                 {{if eq .FileCount 0}}
+                                <button  command="show-modal" commandfor="delete-modal" id="delete-btn" data-id="{{.Id}}" type="button"
+                                    class="channeldelete cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</a>
+                                   {{else}}
+                                    <button  command="show-modal" commandfor="delete-modal" id="delete-toast-btn"  data-id="{{.Id}}" type="button"
+                                    class="cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 delete-toast-btn block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</a>
+                                  {{end}}
+                            </div> 
+                        </el-menu>
+                    </el-dropdown>
+                </div>
+                <p class="text-[13px] leading-[19px] font-normal line-clamp-3 text-[#28303E] mb-[20px]">
+                    {{.ChannelDescription}}</p>
+                <div class="flex gap-[8px] items-center">
+                    <p
+                        class="text-[13px] leading-[20px] font-medium text-[#28303E] border border-solid border-[#E0E4EB] rounded-[4px] p-[3px_6px]">
+                        {{.FileCount}} Documents
+                    </p>
+                    <a href="/channels/{{.Id}}{{if .FirstFolderId}}?folderid={{.FirstFolderId}}{{end}}" class="min-w-[24px] self-start ms-auto cursor-pointer">
+                        <img src="/public/img/add.svg" alt="" class="hidden group-hover:block">
+                        <img src="/public/img/add-bordered.svg" alt="" class="group-hover:hidden">
+                    </a>
+                </div>
+            </div>
+            {{end}}
+
+
+        </div>
+        
+        {{ else if eq .Searchtrue true}}
+        <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+            <img src="/public/img/No data.svg" alt="">
+
+            <p class="pt-4 text-base font-normal text-[#4F607D] ">It looks like there are no result that match your search</p>
+
+
+
+        </div>
+
+        {{else}}
+
+        <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+            <img src="/public/img/add-folder.svg" alt="">
+            <h3 class="py-[30px_12px] text-[20px] font-semibold text-[#202124]">No channels created yet!</h3>
+            <p class="text-base font-normal text-[#4F607D] mb-[20px]">Start organizing your files by creating a channel tailored to your needs</p>
+            <button command="show-modal" commandfor="create-channel-dialog"
+                class="dark-btn h-[33px] !px-[16px] !w-[210px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] "
+                style="background: rgb(32, 39, 50);">
+                <img src="/public/img/plus-white.svg" alt=""> Add Channel</button>
+
+        </div>
+        {{end}}
+    </div>
+</div>
+<div
+            class="@container gap-[1rem] max-sm:w-full max-md:w-full flex justify-between  @[500px]:justify-center items-center p-[16px] fixed bottom-0 w-[calc(100%-50px)]  right-0 bg-[#ffffff]">            <ul class="@[500px]:!ml-auto justify-center items-center space-x-[8px] flex">
+                {{if gt .Count .Limit}}
+
+                <li> <a href="?page={{.Pagination.PreviousPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center w-[24px] h-[24px]  items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] hover:bg-[#F5F5F5] font-normal text-[#222222]  @[500px]:w-[77px]  @[500px]:h-[36px] space-x-[4px] {{if eq .CurrentPage 1}}opacity-50  pointer-events-none {{end}}">
+                        <img src="/public/img/pg-prev.svg" alt="previous">
+                        <span class=" max-sm:hidden"> {{$Translate.Jobs.Back}}</span>
+                    </a>
+                </li>
+                
+                {{if gt .CurrentPage 3}}
+                {{$keyword := .filter.Keyword}}
+                <li> <a href="?page=1{{if $keyword}}&keyword={{$keyword}}{{end}}" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        1 </a> </li>
+                {{end}}
+                {{if eq .CurrentPage 5}}
+                <li> <a href="?page=2{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px] ">
+                        2 </a> </li>
+                {{end}}
+                {{if gt .CurrentPage 5}}
+                <li> <a href="javascript:void(0)" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        ...</a> </li>
+                {{end}}
+                {{if gt .CurrentPage 2}}
+                <li> <a href="?page={{.Pagination.TwoBelow}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.TwoBelow}} </a> </li>
+                {{end}}
+                {{if gt .CurrentPage 1}}
+                <li> <a href="?page={{.Pagination.PreviousPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.PreviousPage}} </a> </li>
+                {{end}}
+
+                <li> <a href=""
+                        class=" {{if  .CurrentPage }} flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] text-[14px]   @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px] border-none text-[#FFFFFF] hover:text-[#FFFFFF] bg-[#704C9B] hover:bg-[#704C9B] font-bold {{end}}">
+                        {{.CurrentPage}} </a> </li>
+
+                {{if lt .CurrentPage .Pagination.TotalPages}}
+                <li> <a href="?page={{.Pagination.NextPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+     @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.NextPage}} </a> </li>
+                {{end}}
+                {{if (le .Pagination.TwoAfter .Pagination.TotalPages)}}
+                <li> <a href="?page={{.Pagination.TwoAfter}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.TwoAfter}} </a> </li>
+                {{end}}
+                {{if (lt .Pagination.ThreeAfter .Pagination.TotalPages)}}
+                <li> <a href="javascript:void(0)" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        ...</a> </li>
+                {{end}}
+                {{if (lt .Pagination.TwoAfter .Pagination.TotalPages)}}
+                <li> <a href="?page={{.Pagination.TotalPages}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.TotalPages}}</a> </li> {{end}}
+                <li> <a href="?page={{.Pagination.NextPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center w-[24px] h-[24px] items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] hover:bg-[#F5F5F5] font-normal text-[#222222]  @[500px]:w-[77px]  @[500px]:h-[36px] space-x-[4px] {{if eq .CurrentPage .PageCount}}opacity-50  pointer-events-none {{end}}">
+                        <span class=" max-sm:hidden"> {{$Translate.Next}} </span> <img src="/public/img\pg-nxt.svg"
+                            alt="next">
+                    </a>
+                </li>
+                {{end}}
+            </ul>
+            <!-- <p class="@[500px]:!ml-auto text-[14px] font-normal text-[#222222] leading-[14px]">
+                {{.Paginationstartcount}} – {{.Paginationendcount}} {{$Translate.Of}} {{.Count}}
+            </p> -->
+        </div>
+
+
+</main>
+
+<!-- Create Channel modal -->
+<el-dialog>
+    <dialog id="create-channel-dialog" aria-labelledby="create-channel-dialog-title"
+        class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+
+        <el-dialog-backdrop
+            class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in">
+        </el-dialog-backdrop>
+
+        <div tabindex="0"
+            class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center">
+
+            <el-dialog-panel class="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all 
+               data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out 
+               data-leave:duration-200 data-leave:ease-in sm:my-8 w-full sm:max-w-[636px] 
+               data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+
+
+                <div class="flex items-center p-[30px_30px_30px_30px] max-lg:p-[24px_16px_16px] ">
+                    <h2
+                        class="createtext text-[24px] max-lg:text-[16px] max-lg:leading-[16px] leading-[20px] font-semibold text-[#202124]">
+                        Create Channel</h2>
+                    <button command="close" commandfor="create-channel-dialog"
+                        class=" ms-auto ps-[10px] cursor-pointer"> <img class="cancelbtn" src="/public/img/close.svg" alt=""> </button>
+                </div>
+                <form action="/channels/createchannel" method="post" id="createchannel">
+                    <input type="hidden" name="csrf" value="{{.csrf}}">
+                    <input type="hidden" class="channelid" name="channelid" id="channelid" value="">
+                    <div class="px-[30px] pb-[30px] ">
+
+                        <div class="mb-[20px] ">
+                            <label for="channelname"
+                                class="text-sm leading-[22px] font-semibold text-[#202732] mb-[10px] block">Channel
+                                Name</label>
+                            <input type="text" placeholder="Channel Name" name="channelname" id="channelname"
+                                class="channelname [&amp;+label]:text-[#F26674] [&amp;+label]:font-normal [&amp;+label]:text-xs  (error label tailwind css)  border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[48px] block w-full outline-none focus:border-[#704C9B] mb-[16px]">
+                        
+                            </div>
+
+                        <div class="mb-[20px]">
+                            <label for=""
+                                class="text-sm leading-[22px] font-semibold text-[#202732] mb-[10px] block">Description</label>
+                            <textarea placeholder="Description" name="channeldesc"
+                                class="channeldesc border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[120px] block w-full outline-none focus:border-[#704C9B] mb-[26px]"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="flex gap-[10px] justify-end w-full pb-[30px] px-[30px]">
+                        <button command="close" commandfor="create-channel-dialog" type="button"
+                            class="cancelbtn bg-[#E0E4EB] h-[40px] max-w-max !px-[14px] flex items-center gap-[4px] rounded-[8px] text-base leading-[20px] font-normal text-[#28303E] cursor-pointer border border-solid border-[#E0E4EB] hover:border-[#704C9B]">
+                            Cancel</button>
+                        <button id="Save"
+                            class="savebtn dark-btn h-[40px] max-w-max !px-[14px] flex gap-[4px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] ">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            </el-dialog-panel>
+        </div>
+    </dialog>
+</el-dialog>
+
+{{template "footer" .}}
+
+
+<script src="/public/js/channels/channellist.js"></script>

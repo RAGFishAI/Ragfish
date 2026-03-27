@@ -1,0 +1,250 @@
+{{define "agentheader"}}
+
+
+
+
+<div class="min-h-[calc(100dvh-52px)] flex flex-col [scrollbar-width:thin] overflow-auto">
+    <div
+        class="flex justify-between p-[20px_24px] border-b border-solid border-[#E7E9EF] flex items-start gap-[20px] max-sm:flex-col">
+        <div class=" flex items-start gap-[20px]">
+            <div
+                class="w-[42px] h-[42px] border border-solid border-[#F1D5FF] bg-[#F8ECFE] rounded-[12px] min-w-[42px] grid place-items-center">
+                <img src="{{.assistant.ImagePath}}" alt="" class="w-[28px]">
+            </div>
+            <div>
+                <h2 class="text-[18px] leading-[20px] font-bold text-[#202732] mb-[10px]"> {{.assistant.AssistantName}}
+                </h2>
+                <p class="text-[13px] leadnig-[20px] font-normal text-[#28303E]"> {{.assistant.Description}}</p>
+            </div>
+        </div>
+
+        <!-- <div class="max-sm:ms-auto">
+                        <a href=""
+                            class="dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] ">Publish
+                            <img src="/public/img/publish.svg" alt=""></a>
+                    </div> -->
+        <div class="ms-auto">
+
+
+            <el-dropdown class="inline-flex" id="publish-dropdown" :hide-on-click="false">
+                <button
+                    class="dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] ">Publish
+                    <img src="/public/img/publish.svg" alt=""></button>
+
+                <el-menu anchor="bottom end" popover
+                    class="w-[calc(100vw-32px)] max-w-[599px] pointer-events-auto origin-top-right rounded-[12px] bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                    <div class="p-[16px] md:p-[20px_30px]">
+                        <div class="border-b border-[#E0E4EB]">
+                            <ul class="flex items-end gap-[20px] overflow-auto [scrollbar-width:none]"
+                                id="default-styled-tab1" data-tabs-toggle="#default-styled-tab-content1"
+                                data-tabs-active-classes="text-[#704C9B] !font-bold border-[#704C9B] hover:!border-[#704C9B]"
+                                data-tabs-inactive-classes="hover:text-[#704C9B] text-[#4F607D] border-transparent transition-all duration-300"
+                                role="tablist">
+                                <li class="me-2" role="presentation">
+                                    <a class="flex gap-[8px] items-center w-fit p-[10px_5px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                                        id="profile-styled-tab1" data-tabs-target="#styled-profile1" type="button"
+                                        role="tab" aria-controls="profile1" aria-selected="false"> <svg width="20"
+                                            height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M8.33398 11.0238C8.45198 11.2171 8.59207 11.4 8.75415 11.5687C9.7604 12.6159 11.2942 12.7797 12.4653 12.0598C12.6823 11.9264 12.8868 11.7628 13.0733 11.5687L15.7728 8.75918C16.9655 7.51788 16.9655 5.50531 15.7728 4.26399C14.5801 3.02268 12.6463 3.02268 11.4536 4.26399L10.859 4.88283"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                            <path
+                                                d="M9.14257 15.1167L8.54774 15.7357C7.35504 16.977 5.42124 16.977 4.22853 15.7357C3.0358 14.4943 3.0358 12.4818 4.22853 11.2405L6.92804 8.431C8.12076 7.18967 10.0546 7.18966 11.2472 8.431C11.4093 8.59958 11.5493 8.7825 11.6673 8.97566"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                        </svg>
+                                        Shared a Link</a>
+                                </li>
+                                <li class="me-2" role="presentation">
+                                    <a class="flex gap-[8px] items-center w-fit p-[10px_5px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                                        id="dashboard-styled-tab1" data-tabs-target="#styled-dashboard1" type="button"
+                                        role="tab" aria-controls="dashboard1" aria-selected="false"> <svg width="24"
+                                            height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M16 10L17.2265 11.0572C17.7422 11.5016 18 11.7239 18 12C18 12.2761 17.7422 12.4984 17.2265 12.9428L16 14"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path
+                                                d="M8 10L6.77346 11.0572C6.25782 11.5016 6 11.7239 6 12C6 12.2761 6.25782 12.4984 6.77346 12.9428L8 14"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path d="M13 9L11 15" stroke="currentColor" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path
+                                                d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
+                                                stroke="currentColor" stroke-width="1.5" />
+                                        </svg>
+                                        Get Embed code</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="default-styled-tab-content1" class="grow flex flex-col">
+
+                            <div class="grow flex flex-col" id="styled-profile1" role="tabpanel"
+                                aria-labelledby="profile-tab1">
+                                <div class="mt-[20px]">
+                                    <p class="text-[14px]! leading-[20px] font-normal text-[#3C485E] mb-[20px]">
+                                        Copy a shareable link and send it to the user so they can open the chat and
+                                        start messaging.</p>
+                                    <div
+                                        class="flex items-center border border-solid border-[#E0E4EB] p-[6px_6px_6px_16px] rounded-[8px] gap-[10px]">
+                                        <img src="/public/img/link.svg" alt="">
+                                        <input type="text" id="urlinput"
+                                            value="{{.BaseURL}}chat/{{.assistant.AssistantSlug}}/{{.assistantUUID}}"
+                                            class="text-[16px]! block grow outline-none bg-transparent leading-[20px] w-full"
+                                            readonly>
+                                        <button type="button" id="copyBtn"
+                                            class="dark-btn h-[40px] max-w-max !px-[14px] flex gap-[4px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] ">
+                                            <img src="/public/img/copy.svg" alt=""> <span
+                                                class="max-sm:hidden copy_text">Copy Link</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="grow flex flex-col" id="styled-dashboard1" role="tabpanel"
+                                aria-labelledby="dashboard-tab1">
+                                <div class="mt-[20px]">
+                                    <p class="leading-[20px] text-[14px]! font-normal text-[#3C485E] mb-[20px]">
+Use this option to generate the code snippet for embedding. Copy and paste it into your application or website as
+needed.</p>
+                                    <div class="flex flex-col items-center gap-[20px]">
+                                        <textarea
+                                            class="block grow outline-none bg-transparent pointer-events-none border border-solid border-[#E0E4EB] p-[12px_16px] h-[126px] rounded-[8px] resize-none w-full text-[13px] leading-[20px] font-normal text-[#28303E]"
+                                            readonly>&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot;viewBox=&quot;0 0 24 24&quot; width=&quot;24&quot; height=&quot;24&quot; color=&quot;#000000&quot; fill=&quot;none&quot;&gt;&lt;path d=&quot;M16 10L17.2265 11.0572C17.7422 11.5016 18 11.7239 18 12C18 12.2761 17.7422 12.4984 17.2265 12.9428L16 14&quot;stroke=&quot;#141B34&quot;stroke-width=&quot;1.5&quot;stroke-linecap=&quot;round&quot;stroke-linejoin=&quot;round&quot; /&gt;&lt;/svg&gt;</textarea>
+                                        <div class="flex gap-[8px] justify-end w-full">
+                                            <button
+                                                class="bg-[#E0E4EB] h-[40px] max-w-max !px-[14px] flex items-center gap-[4px] rounded-[8px] text-base leading-[20px] font-normal text-[#28303E] cursor-pointer border border-solid border-[#E0E4EB] hover:border-[#704C9B]">
+                                                Cancel</button>
+                                            <button
+                                                class=" h-[40px] max-w-max !px-[14px] flex gap-[4px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] ">
+                                                <img src="/public/img/copy.svg" alt=""> <span class="max-sm:hidden">Copy
+                                                    Link</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </el-menu>
+            </el-dropdown>
+        </div>
+    </div>
+
+
+
+    <div class="grow flex flex-col">
+        <div class="border-b border-[#E0E4EB]">
+            <ul class="flex items-center gap-[20px] overflow-auto [scrollbar-width:none] px-[24px]"
+                id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content"
+                data-tabs-active-classes="text-[#704C9B] !font-bold border-[#704C9B] hover:!border-[#704C9B]"
+                data-tabs-inactive-classes="hover:text-[#704C9B] text-[#4F607D] border-transparent transition-all duration-300"
+                role="tablist">
+                <li class="me-2" role="presentation">
+                    <a href="/app/{{.assistant.AssistantSlug}}/{{.assistant.UniqueId}}"
+                        class="{{if eq .title `PlayGround`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent text-[#4F607D] {{end}} hover:text-[#704C9B]  flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                        id="profile-styled-tab" aria-controls="profile" aria-selected="false">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_507_5592)">
+                                <path
+                                    d="M14 10C14 10.3536 13.8595 10.6928 13.6095 10.9428C13.3594 11.1929 13.0203 11.3333 12.6667 11.3333H4.66667L2 14V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H12.6667C13.0203 2 13.3594 2.14048 13.6095 2.39052C13.8595 2.64057 14 2.97971 14 3.33333V10Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_507_5592">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg> PLAY GROUND</a>
+                </li>
+                <li class="me-2" role="presentation">
+                    <a href="/app/{{.assistant.AssistantSlug}}/{{.assistant.UniqueId}}/dataprotection"
+                        class="{{if eq .title `Data Protection`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent text-[#4F607D] {{end}} hover:text-[#704C9B]  flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                        id="dashboard-styled-tab" aria-controls="dashboard" aria-selected="false"> <svg width="16"
+                            height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_507_5598)">
+                                <path
+                                    d="M13.3334 8.66567C13.3334 11.999 11.0001 13.6657 8.22675 14.6323C8.08153 14.6815 7.92378 14.6792 7.78008 14.6257C5.00008 13.6657 2.66675 11.999 2.66675 8.66567V3.999C2.66675 3.82219 2.73699 3.65262 2.86201 3.52759C2.98703 3.40257 3.1566 3.33233 3.33342 3.33233C4.66675 3.33233 6.33342 2.53233 7.49342 1.519C7.63465 1.39833 7.81432 1.33203 8.00008 1.33203C8.18585 1.33203 8.36551 1.39833 8.50675 1.519C9.67342 2.539 11.3334 3.33233 12.6668 3.33233C12.8436 3.33233 13.0131 3.40257 13.1382 3.52759C13.2632 3.65262 13.3334 3.82219 13.3334 3.999V8.66567Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_507_5598">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        DATA PROTECTION</a>
+                </li>
+                <li class="me-2" role="presentation">
+                    <a href="/app/{{.assistant.AssistantSlug}}/{{.assistant.UniqueId}}/general"
+                        class="{{if eq .title `General`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent text-[#4F607D] {{end}} hover:text-[#704C9B]  flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                        id="profile-styled-tab" aria-controls="profile" aria-selected="false">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_507_5592)">
+                                <path
+                                    d="M14 10C14 10.3536 13.8595 10.6928 13.6095 10.9428C13.3594 11.1929 13.0203 11.3333 12.6667 11.3333H4.66667L2 14V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H12.6667C13.0203 2 13.3594 2.14048 13.6095 2.39052C13.8595 2.64057 14 2.97971 14 3.33333V10Z"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_507_5592">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg> GENERAL</a>
+                </li>
+                <li class="me-2" role="presentation">
+                    <a href="/app/{{.assistant.AssistantSlug}}/{{.assistant.UniqueId}}/activitylog"
+                        class="{{if eq .title `Activity Log`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent text-[#4F607D] {{end}} hover:text-[#704C9B]  flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                        id="settings-styled-tab" aria-controls="settings" aria-selected="false">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_507_5604)">
+                                <path
+                                    d="M14.6666 7.99968H13.0133C12.7219 7.99905 12.4384 8.09388 12.206 8.26966C11.9736 8.44543 11.8053 8.69248 11.7266 8.97301L10.1599 14.5463C10.1498 14.581 10.1288 14.6114 10.0999 14.633C10.0711 14.6547 10.036 14.6663 9.99992 14.6663C9.96386 14.6663 9.92877 14.6547 9.89992 14.633C9.87107 14.6114 9.85002 14.581 9.83992 14.5463L6.15992 1.45301C6.14982 1.41839 6.12877 1.38798 6.09992 1.36634C6.07107 1.3447 6.03598 1.33301 5.99992 1.33301C5.96386 1.33301 5.92877 1.3447 5.89992 1.36634C5.87107 1.38798 5.85002 1.41839 5.83992 1.45301L4.27325 7.02634C4.1949 7.30578 4.02751 7.55202 3.7965 7.72769C3.56548 7.90335 3.28347 7.99885 2.99325 7.99968H1.33325"
+                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_507_5604">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+
+                        ACTIVITY LOG</a>
+                </li>
+                <li class="me-2" role="presentation">
+                    <a href="/app/{{.assistant.AssistantSlug}}/{{.assistant.UniqueId}}/models"
+                        class="{{if eq .title `Models`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent text-[#4F607D] {{end}} hover:text-[#704C9B]  flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                        id="modals-styled-tab" aria-controls="settings" aria-selected="false">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_739_2457)">
+                                <path
+                                    d="M10.9901 8.5776C11.2336 8.4906 11.3971 8.2581 11.3971 7.9996C11.3971 7.7411 11.2336 7.5086 10.9911 7.4216L9.87614 7.0196C8.77514 6.6231 7.91614 5.7636 7.51914 4.6626L7.11714 3.5476C7.02964 3.3051 6.79764 3.1416 6.54014 3.1416C6.28214 3.1416 6.04964 3.3046 5.96164 3.5476L5.56014 4.6626C5.16314 5.7641 4.30414 6.6231 3.20264 7.0196L2.08864 7.4216C1.84514 7.5091 1.68164 7.7411 1.68164 7.9996C1.68164 8.2581 1.84514 8.4901 2.08764 8.5776L3.20264 8.9796C4.30364 9.3761 5.16264 10.2351 5.55964 11.3366L5.96164 12.4521C6.04914 12.6946 6.28164 12.8576 6.53964 12.8576C6.79764 12.8576 7.03014 12.6941 7.11714 12.4516L7.51914 11.3366C7.91564 10.2356 8.77514 9.3766 9.87614 8.9796L10.9901 8.5776ZM9.53714 8.0386C8.15464 8.5366 7.07614 9.6151 6.57814 10.9976L6.53914 11.1056L6.50014 10.9976C6.00164 9.6151 4.92314 8.5366 3.54114 8.0386L3.43364 7.9996L3.54164 7.9606C4.92414 7.4626 6.00264 6.3841 6.50064 5.0016L6.53964 4.8936L6.57864 5.0016C7.07664 6.3841 8.15514 7.4626 9.53714 7.9606L9.64514 7.9996L9.53714 8.0386Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M9.2733 3.7315L9.8378 3.935C10.3263 4.111 10.7068 4.492 10.8828 4.98L11.0858 5.544C11.1653 5.765 11.3763 5.9135 11.6108 5.9135C11.8453 5.9135 12.0568 5.765 12.1358 5.5445L12.3393 4.98C12.5153 4.4915 12.8963 4.1105 13.3843 3.935L13.9493 3.7315C14.1688 3.652 14.3173 3.4415 14.3178 3.208C14.3183 2.9745 14.1713 2.763 13.9493 2.682L13.3843 2.4785C12.8963 2.3025 12.5153 1.9215 12.3393 1.4335L12.1358 0.869C12.0563 0.648 11.8458 0.5 11.6113 0.5C11.3763 0.5 11.1653 0.6485 11.0863 0.869L10.8828 1.4335C10.7068 1.922 10.3258 2.3025 9.8378 2.4785L9.2718 2.6825C9.0518 2.7625 8.9038 2.974 8.9043 3.208C8.9048 3.442 9.0533 3.6525 9.2733 3.7315ZM11.6113 2.2275C11.8483 2.6335 12.1848 2.97 12.5903 3.2065C12.1843 3.4435 11.8478 3.78 11.6113 4.1855C11.3743 3.78 11.0378 3.443 10.6323 3.2065C11.0378 2.9695 11.3743 2.633 11.6113 2.2275Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M13.9493 12.2689L13.3848 12.0654C12.8968 11.8894 12.5158 11.5084 12.3398 11.0204L12.1363 10.4559C12.0568 10.2354 11.8458 10.0869 11.6113 10.0869C11.3763 10.0869 11.1653 10.2354 11.0863 10.4559L10.8828 11.0204C10.7068 11.5089 10.3258 11.8899 9.8378 12.0654L9.2738 12.2684C9.0533 12.3474 8.9048 12.5584 8.9043 12.7924C8.9038 13.0264 9.0513 13.2379 9.2733 13.3184L9.8378 13.5219C10.3263 13.6979 10.7073 14.0784 10.8828 14.5669L11.0858 15.1309C11.1658 15.3519 11.3768 15.5004 11.6118 15.5004C11.8468 15.5004 12.0578 15.3519 12.1368 15.1314L12.3403 14.5669C12.5163 14.0789 12.8973 13.6979 13.3853 13.5219L13.9523 13.3179C14.1718 13.2374 14.3193 13.0264 14.3188 12.7924C14.3183 12.5584 14.1693 12.3484 13.9493 12.2689ZM11.6118 13.7729C11.3748 13.3669 11.0383 13.0304 10.6328 12.7939C11.0383 12.5569 11.3753 12.2204 11.6118 11.8149C11.8488 12.2204 12.1853 12.5574 12.5908 12.7939C12.1853 13.0309 11.8483 13.3674 11.6118 13.7729Z"
+                                    fill="currentColor" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_739_2457">
+                                    <rect width="16" height="16" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                        MODELS</a>
+                </li>
+            </ul>
+        </div>
+
+
+        {{end}}

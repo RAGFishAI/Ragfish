@@ -1,0 +1,81 @@
+{{template "authheader" .}}
+   <section class="grid md:grid-cols-2 p-[12px] min-h-dvh">
+        <div class="bg-[url('/public/img/auth-bg.svg')] bg-cover rounded-[12px] overflow-hidden bg-center flex flex-col bg-no-repeat max-md:hidden">
+            <div class="p-[30px_30px_16px_30px]">
+                <a href="" class="inline-flex">
+                    <img src="/public/img/logo.svg" alt="">
+                </a>
+            </div>
+             <div
+                class=" p-[16px_30px_16px_30px] flex items-center justify-center m-[auto_auto_0_auto] max-w-[622px] max-h-[calc(100vh-361px)] transform-element">
+                <img src="/public/img/auth-banner.png" alt="" class="h-full w-full object-center object-contain">
+            </div>
+            <div class="p-[30px] m-[22px_0_50px]">
+                <div class="max-w-[500px] flex flex-col items-center mx-auto">
+                    <span
+                        class="text-[13px] leading-[16px] font-medium text-[#704C9B] p-[3px_5px] border border-solid border-[#E0C7FF] bg-[#ECDBFF] rounded w-max mx-auto mb-[10px] inline-block transform-element">New</span>
+                    <h3 class="text-[22px] leading-[28px] font-semibold text-[#27242B] text-center mb-[14px] transform-element">
+                        Accurate AI answers from your data</h3>
+                    <p class="text-base leading-[24px] font-normal text-[#3C485E] text-center transform-element">From data ingestion
+                        to intelligent retrieval, RAGFish streamlines the entire RAG workflow so your AI stays
+                        accurate and scalable</p>
+                </div>
+            </div>
+        </div>
+        <div class="items-center justify-center flex flex-col p-[30px]">
+            <div class="md:p-[60px_40px_40px] w-full max-w-[516px]">
+                <a href="" class="mb-[36px] inline-block"><img src="/public/img/logo-text.svg" alt=""></a>
+                <h3 class="text-[22px] leading-[26px] font-semibold text-[#202732] mb-[8px]">Welcome Back</h3>
+                <p class="text-sm leading-[17px] font-normal text-[#4F607D] mb-[30px]">Enter your credentials to access your account</p>
+                <form action="/sign-in" method="post" id="siginform" name="siginform">
+                <div class="flex flex-col gap-2.5">
+
+                   
+                         <input type="hidden" name="csrf" value="{{.csrf}}">
+                         <input type="hidden" name="userid" class="userid" value="">
+                <div class="emaildiv relative">
+                    <label for="" class="text-sm leading-[22px] font-semibold text-[#28303E] mb-[4px] block">Email address</label>
+                    <input type="text" name="emailid" placeholder="Your email address" class="border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[42px] block w-full outline-none focus:border-[#704C9B]  ">
+               
+                    <label id="emailid-error" class="error hidden">
+                             You are not registered with us</label></div>
+               
+              
+                                                                
+                   <div class="passdiv  relative">
+                    <label for="" class="text-sm leading-[22px] font-semibold text-[#28303E] mb-[4px] block">Password</label>
+                    <div class="relative flex flex-col items-start w-full">
+                        <input type="password" name="password" placeholder="Your password" class="passwordval border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[42px] block w-full outline-none focus:border-[#704C9B] mb-[4px]">
+                          <a href="javascript:void(0)" class="rounded-full mt-2.5 absolute transition-all duration-300 right-[5px] w-[25px] h-[25px] p-[5px] flex items-center hover:bg-[#4F607D]/10"><img src="/public/img/hide-password.svg" alt=""></a>
+                  
+                    </div>
+                      <span id="pas-error" class="hidden pas-error text-[#f26674] font-normal text-xs error  bottom-0 top-full"> Password is Incorrect.</span>
+                   
+                    <div class="flex items-center justify-between mb-[20px]  gap-[16px]">
+                        <!-- <label for="RememberMe" class="flex items-center gap-[6px] cursor-pointer">
+                            <input type="checkbox" name="" id="RememberMe" class="peer hidden">
+                            <img src="/public/img/uncheck.svg" alt="" class="peer-checked:hidden w-[16px] block">
+                            <img src="/public/img/check.svg" alt="" class="hidden peer-checked:block w-[16px] block">
+                            <span class="text-xs leading-[24px] font-medium text-[#202732]">Remember me</span>
+                        </label>
+                       <a  class="font-medium text-xs leading-[20px] font-medium text-[#704C9B] relative group inline-block">Forgot Password ? <span class="absolute left-0 bottom-0 w-0 h-[1px] bg-[#704C9B] transition-all max-lg:hidden duration-300 ease-in-out group-hover:w-full"></span></a>
+                    -->
+                    </div>
+                         </div>
+                    </div>
+                    <button class="emailcontinue dark-btn cursor-pointer h-[42px] w-full text-sm placeholder:text-[#4F607D] leading-[24px] font-semibold text-[#FFFFFF] text-center rounded-[8px]">Submit</button>
+                   
+                   </form>
+                    <!-- <p class="text-[12px] leading-[20px] font-normal text-[#4F607D] text-center mt-[16px]">Don’t have an account? <a href="/sign-up" class="font-semibold text-[#202732] relative group inline-block">Sign up <span class="absolute left-0 bottom-0 w-0 h-[1px] bg-[#202732] transition-all max-lg:hidden duration-300 ease-in-out group-hover:w-full"></span></a></p>
+               -->
+              
+                </div>
+                 
+            </div>
+        </div>
+
+    </section>
+
+{{template "authfooter" .}}    
+
+<script src="/public/js/auth/signin.js"></script>

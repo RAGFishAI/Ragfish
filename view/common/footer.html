@@ -1,0 +1,64 @@
+{{define "footer"}}
+
+
+
+<!-- Delete Model -->
+</section>
+    <el-dialog>
+        <dialog id="delete-modal" aria-labelledby="delete-modal-title"
+            class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+            <el-dialog-backdrop
+                class="fixed inset-0 bg-[#0000004D] transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+            <div tabindex="0"
+                class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+                <el-dialog-panel
+                    class="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-[643px] data-closed:sm:translate-y-0 data-closed:sm:scale-95 m-auto">
+                    <div class="bg-white  p-[24px_16px] lg:p-[40px]">
+                        <div class="mb-[30px] flex items-center gap-[16px] justify-between">
+                           <h2 class=" text-[20px] cfoldertext deltitle lg:text-[24px] leading-[29px] font-semibold text-[#202124] flex justify-start items-center gap-[10px]">  Are you sure want to delete?</h2></span>
+                            <button command="close" commandfor="delete-modal"  class="cursor-pointer inline-block"> <img
+                                   class="w-[24px] h-[24px]"  src="/public/img/close-modal.svg" alt=""></button>
+                        </div>
+                        <div>
+                            
+                            <p class="deldesc text-base font-normal text-[#4F607D]">Lorem ipsum dolor sit amet consectetur. Elementum maecenas molestie interdum dui purus tortor amet. Mauris dignissim </p>
+
+                        </div>
+                    </div>
+                    <div class="p-[0_16px_24px_16px] lg:p-[0_40px_30px_40px] flex gap-[10px] justify-end">
+                        <button command="close" commandfor="delete-modal" type="button" id="dltCancelBtn"
+                            class="cancelbtn  h-[40px] !px-[20px] rounded-[8px] text-base leading-[20px] font-medium text-[#202732] max-w-max cursor-pointer hover:border-[#704C9B] border border-solid border-transparent">Discard</button>
+                        <a id="delid" href=""
+                            class="bg-[#F3F4F7] flex justify-center items-center text-[#EE404C] delete-btn h-[40px] !px-[20px] rounded-[8px] text-base leading-[20px] font-medium  max-w-max cursor-pointer">Delete</a>
+                    </div>
+                </el-dialog-panel>
+            </div>
+        </dialog>
+    </el-dialog>
+
+<!-- 1. jQuery ONLY (3.7.1) - ONCE -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<!-- 2. jQuery UI (1.13.2 ONLY - remove 1.12.1 duplicate) -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<!-- 3. jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<!-- 4. Your custom script (AFTER all jQuery deps) -->
+<script src="/public/js/script.js"></script>
+
+<!-- 5. Other libraries (Modernizr, Tailwind, Flowbite LAST) -->
+   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+<script src="/public/js/common.js"></script>
+</body>
+
+</html>
+
+{{end}}

@@ -1,0 +1,24 @@
+{{define "authfooter"}}
+<!-- 1. jQuery ONLY (3.7.1) - ONCE -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<!-- 2. jQuery UI (1.13.2 ONLY - remove 1.12.1 duplicate) -->
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<!-- 3. jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<!-- 4. Your custom script (AFTER all jQuery deps) -->
+<script src="/public/js/script.js"></script>
+
+<!-- 5. Other libraries (Modernizr, Tailwind, Flowbite LAST) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+</body>
+
+</html>
+
+{{end}}

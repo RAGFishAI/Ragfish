@@ -1,0 +1,361 @@
+{{template "header" .}}
+{{$Translate := .translate}}
+
+
+  <div class="min-h-[calc(100dvh-52px)] flex flex-col overflow-auto">
+                <div class="max-sm:p-[24px_16px] p-[35px_24px_24px]">
+                    <div>
+                        <h2 class="text-[24px] leading-[20px] font-bold text-[#202732] mb-[10px]">User Management
+                        </h2>
+                        <p class="text-[13px] leadnig-[20px] font-normal text-[#28303E]">Manage user roles and authentication.</p>
+                    </div>
+
+                </div>
+
+                <div class="grow flex flex-col">
+                    <div class="border-b border-[#E0E4EB]">
+                        <ul class="flex items-center gap-[20px] overflow-auto [scrollbar-width:none] px-[16px] sm:px-[24px]"
+                            id="default-styled-tab" data-tabs-toggle="#default-styled-tab-content"
+                            data-tabs-active-classes="text-[#704C9B] !font-bold border-[#704C9B] hover:!border-[#704C9B]"
+                            data-tabs-inactive-classes="hover:text-[#704C9B] text-[#4F607D] border-transparent transition-all duration-300"
+                            role="tablist">
+                           <li class="me-2" role="presentation">
+                                <a href="/user"
+                                    class="{{if eq .title `User`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent text-[#4F607D] {{end}} hover:text-[#704C9B]  flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                                   >
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_691_1791)">
+                                            <path
+                                                d="M14 10C14 10.3536 13.8595 10.6928 13.6095 10.9428C13.3594 11.1929 13.0203 11.3333 12.6667 11.3333H4.66667L2 14V3.33333C2 2.97971 2.14048 2.64057 2.39052 2.39052C2.64057 2.14048 2.97971 2 3.33333 2H12.6667C13.0203 2 13.3594 2.14048 13.6095 2.39052C13.8595 2.64057 14 2.97971 14 3.33333V10Z"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_691_1791">
+                                                <rect width="16" height="16" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+
+                                    USER</a>
+                            </li>
+                            <li class="me-2" role="presentation">
+                                <a href="/usergroup"
+                                    class="{{if eq .title `Users Group`}} text-[#704C9B] !font-bold border-[#704C9B] transition-all duration-300 {{else}}border-transparent  text-[#4F607D]{{end}} hover:text-[#704C9B] flex gap-[8px] items-center w-fit p-[10px] border-b-[2px] whitespace-nowrap cursor-pointer text-[13px] leading-[20px] font-medium"
+                                   >
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_691_1797)">
+                                            <path
+                                                d="M13.3334 8.66567C13.3334 11.999 11 13.6657 8.22669 14.6323C8.08146 14.6815 7.92371 14.6792 7.78002 14.6257C5.00002 13.6657 2.66669 11.999 2.66669 8.66567V3.999C2.66669 3.82219 2.73693 3.65262 2.86195 3.52759C2.98697 3.40257 3.15654 3.33233 3.33335 3.33233C4.66669 3.33233 6.33336 2.53233 7.49336 1.519C7.63459 1.39833 7.81426 1.33203 8.00002 1.33203C8.18579 1.33203 8.36545 1.39833 8.50669 1.519C9.67336 2.539 11.3334 3.33233 12.6667 3.33233C12.8435 3.33233 13.0131 3.40257 13.1381 3.52759C13.2631 3.65262 13.3334 3.82219 13.3334 3.999V8.66567Z"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_691_1797">
+                                                <rect width="16" height="16" fill="white" />
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+
+                                    USER GROUP </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="default-styled-tab-content" class="grow flex flex-col">
+
+
+                        <div class="p-[24px] max-sm:p-[24px_16px] grow flex flex-col pb-[100px]" role="tabpanel"
+                            aria-labelledby="settings-tab">
+                            <div class="flex max-sm:flex-col sm:items-center gap-[16px] justify-between mb-[26px]">
+                                <form action="/usergroup/" method="get">
+                                <div class="flex items-center relative w-full max-w-[350px] md:max-w-[391px] ">
+                                    <img src="/public/img/search.svg" alt="search" class="absolute left-[12px]">
+                                    <input type="text" placeholder="Search user group" name="keyword" id="searchmemgroup" value="{{.Filter.Keyword}}"
+                                        class="bg-[#FFFFFF] flex w-full h-[36px] rounded-[4px] h-[36px] ps-[42px] text-sm leading-[17px] font-normal placeholder:italic border border-solid border-[#C1C9D7] placeholder:text-[#3C485E] hover:outline-[4px] outline-[#E6E9EF] focus:border-[#704C9B] transition-all duration-200">
+                                </div>
+                                </form>
+
+                                <div class="flex gap-[10px] items-center">
+
+
+                                    <button command="show-modal" commandfor="dialog1" id="create_user_button"
+                                        class="dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] max-w-max ms-auto"
+                                        style="background: rgb(32, 39, 50);" aria-expanded="false">
+                                        <img src="/public/img/add-channels.svg" alt="">Create User Group</button>
+                                </div>
+
+                            </div>
+
+                            {{if .MemberGroupList}}
+
+                            <div class="grid grid-cols-[repeat(auto-fill,minmax(325px,1fr))] gap-x-[10px] gap-y-[14px]">
+                                
+                                {{range .MemberGroupList}}
+                                <div class="group-card flex flex-col justify-between   p-[20px] border border-solid border-[#E0E4EB] rounded-[12px] bg-[#F8F6FA]">
+                                    <div class="flex justify-between gap-[20px] mb-[20px]">
+                                        <div>
+                                            <a href=""
+                                                class="hover:underline text-base leading-[20px] font-semibold text-[#202732] mb-[4px]">
+                                                {{.Name}}</a>
+                                            <p
+                                                class="text-[13px] line-clamp-3 leading-[20px] font-normal text-[#28303E]">
+                                                {{.Description}}</p>
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <input type="checkbox" id="cb{{.Id}}" class="hidden peer selectcheckbox" data-id="{{.Id}}" onclick="MemberStatus('{{.Id}}')" {{if eq .IsActive 1}}checked{{end}}>
+                                            <label for="cb{{.Id}}" 
+                                                class="w-[36px] h-[20px] rounded-[1000px] flex items-center bg-[#D3D3D3] relative cursor-pointer peer-checked:bg-[#4CAF50] peer-checked:[&amp;&gt;span]:translate-x-[16px]">
+                                                <span
+                                                    class="block w-[16px] h-[16px] rounded-full bg-white absolute left-[2px] transition-all duration-200"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-[16px] justify-between">
+                                        <div class="flex items-center gap-[10px]">
+                                            <!-- <div class="flex items-center ps-[8px]">
+                                                <img src="/public/img/user-profile1.svg" alt=""
+                                                    class="min-w-[24px] h-[24px] -ms-[8px]">
+                                                <img src="/public/img/user-profile2.svg" alt=""
+                                                    class="min-w-[24px] h-[24px] -ms-[8px]">
+                                                <img src="/public/img/user-profile3.svg" alt=""
+                                                    class="min-w-[24px] h-[24px] -ms-[8px]">
+                                                <img src="/public/img/user-profile1.svg" alt=""
+                                                    class="min-w-[24px] h-[24px] -ms-[8px]">
+
+                                            </div> -->
+                                            <p class="text-sm leading-[20px] text-[#28303E] font-medium">{{.UserCount}} Users</p>
+                                        </div>
+                                        <el-dropdown class="inline-flex" style="--button-width: 22px;">
+                                            <button
+                                                class="inline-flex w-[22px] hover:bg-[#D3D3D3] h-[24px] rounded cursor-pointer [[aria-expanded='true']]:bg-[#D3D3D3] "
+                                                id="menu-button-13" type="button" aria-haspopup="menu"
+                                                aria-controls="menu-12" aria-expanded="false" popovertarget="menu-12">
+                                                <img src="/public/img/table-menu.svg" alt="">
+                                            </button>
+
+                                            <el-menu anchor="bottom end" popover="manual"
+                                                class="w-[150px] origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                                                id="menu-12" role="menu">
+                                                <div class="py-1">
+                                                    
+                                                    <button command="show-modal" commandfor="dialog1"
+                                                        class="cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden editmembergroup" data-id="{{.Id}}"
+                                                        id="item-14" role="menuitem" tabindex="-1">Edit</button>
+                                                    <button  id="delete-btn" command="show-modal" commandfor="delete-modal"
+                                                        class="cursor-pointer text-start w-full hover:bg-gray-100 hover:text-gray-900 block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden"
+                                                        id="item-15" role="menuitem" tabindex="-1" data-id="{{.Id}}">Delete</button>
+
+                                                </div>
+                                            </el-menu>
+                                        </el-dropdown>
+                                    </div>
+                                </div>
+                                {{end}}
+                                
+                                
+                                
+                                
+
+
+                            </div>
+ {{ else if eq .Searchtrue true}}
+        <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+            <img src="/public/img/No data.svg" alt="">
+
+            <p class="pt-4 text-base font-normal text-[#4F607D] ">It looks like there are no result that match your search</p>
+
+
+
+        </div>
+                            {{else}}
+                            
+                            
+                                           <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+            <img src="/public/img/User.svg" alt="">
+            <h3 class="py-[30px_12px] text-[20px] font-semibold text-[#202124]">No User Group created yet!</h3>
+            <p class="text-base font-normal text-[#4F607D] mb-[20px]">Users give people access to your system. Add a user to get started</p>
+            <button command="show-modal" commandfor="dialog1"
+                class="dark-btn h-[33px] !px-[16px] !w-[210px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] "
+                style="background: rgb(32, 39, 50);">
+                <img src="/public/img/plus-white.svg" alt=""> Add User Group</button>
+
+        </div>
+                                    
+                                    {{end}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        {{if .MemberGroupList}}
+        <!--pagination-->
+        <div
+            class="@container gap-[1rem] max-sm:w-full max-md:w-full flex justify-end  @[500px]:justify-center items-center p-[16px] fixed bottom-0 w-[calc(100%-50px)]  right-0 bg-[#ffffff]">
+            <ul class="@[500px]:!ml-auto justify-center items-center space-x-[8px] flex">
+                {{if gt .Count .Limit}}
+
+                <li> <a href="?page={{.Pagination.PreviousPage}}{{if .Filter.Keyword}}&keyword={{.Filter.Keyword}}{{end}}"
+                        class="flex justify-center w-[24px] h-[24px]  items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] hover:bg-[#F5F5F5] font-normal text-[#222222]  @[500px]:w-[77px]  @[500px]:h-[36px] space-x-[4px] {{if eq .CurrentPage 1}}opacity-50  pointer-events-none {{end}}">
+                        <img src="/public/img/pg-prev.svg" alt="previous">
+                        <span class=" max-sm:hidden"> {{$Translate.Jobs.Back}}</span>
+                    </a>
+                </li>
+                {{if gt .CurrentPage 3}}
+                {{$keyword := .filter.Keyword}}
+                <li> <a href="?page=1{{if $keyword}}&keyword={{$keyword}}{{end}}" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        1 </a> </li>
+                {{end}}
+                {{if eq .CurrentPage 5}}
+                <li> <a href="?page=2{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px] ">
+                        2 </a> </li>
+                {{end}}
+                {{if gt .CurrentPage 5}}
+                <li> <a href="javascript:void(0)" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        ...</a> </li>
+                {{end}}
+                {{if gt .CurrentPage 2}}
+                <li> <a href="?page={{.Pagination.TwoBelow}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.TwoBelow}} </a> </li>
+                {{end}}
+                {{if gt .CurrentPage 1}}
+                <li> <a href="?page={{.Pagination.PreviousPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.PreviousPage}} </a> </li>
+                {{end}}
+
+                <li> <a href=""
+                        class=" {{if  .CurrentPage }} flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] text-[14px]   @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px] border-none text-[#FFFFFF] hover:text-[#FFFFFF] bg-[#704C9B] hover:bg-[#704C9B] font-bold {{end}}">
+                        {{.CurrentPage}} </a> </li>
+
+                {{if lt .CurrentPage .Pagination.TotalPages}}
+                <li> <a href="?page={{.Pagination.NextPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+     @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.NextPage}} </a> </li>
+                {{end}}
+                {{if (le .Pagination.TwoAfter .Pagination.TotalPages)}}
+                <li> <a href="?page={{.Pagination.TwoAfter}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.TwoAfter}} </a> </li>
+                {{end}}
+                {{if (lt .Pagination.ThreeAfter .Pagination.TotalPages)}}
+                <li> <a href="javascript:void(0)" class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        ...</a> </li>
+                {{end}}
+                {{if (lt .Pagination.TwoAfter .Pagination.TotalPages)}}
+                <li> <a href="?page={{.Pagination.TotalPages}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] font-normal hover:bg-[#F5F5F5] text-[#222222]
+                    @[500px]:w-[33px] @[500px]:h-[36px]  w-[24px] h-[24px] space-x-[4px]">
+                        {{.Pagination.TotalPages}}</a> </li> {{end}}
+                <li> <a href="?page={{.Pagination.NextPage}}{{if .filter.Keyword}}&keyword={{.filter.Keyword}}{{end}}"
+                        class="flex justify-center w-[24px] h-[24px] items-center rounded-[4px] border-[.0625rem] border-[#ECECEC] bg-[#FFF] hover:text-[#222222] text-[14px] hover:bg-[#F5F5F5] font-normal text-[#222222]  @[500px]:w-[77px]  @[500px]:h-[36px] space-x-[4px] {{if eq .CurrentPage .PageCount}}opacity-50  pointer-events-none {{end}}">
+                        <span class=" max-sm:hidden"> {{$Translate.Next}} </span> <img src="/public/img\pg-nxt.svg"
+                            alt="next">
+                    </a>
+                </li>
+                {{end}}
+            </ul>
+            <!-- <p class="@[500px]:!ml-auto text-[14px] font-normal text-[#222222] leading-[14px]">
+                {{.Paginationstartcount}} – {{.Paginationendcount}} {{$Translate.Of}} {{.Count}}
+            </p> -->
+        </div>
+
+        {{end}}
+        </section>
+
+
+    <!-- create user group -->
+    <el-dialog>
+        <dialog id="dialog1" aria-labelledby="dialog-title"
+            class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+            <el-dialog-backdrop
+                class="fixed inset-0 bg-[#0000004D] transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+            <div tabindex="0"
+                class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+                <el-dialog-panel
+                    class="relative transform overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 w-full sm:max-w-[636px] data-closed:sm:translate-y-0 data-closed:sm:scale-95 m-auto">
+                   
+                    <div class="bg-white  p-[24px_16px] lg:p-[30px_30px_30px_30px]">
+                        <div class="mb-[30px] flex items-center gap-[16px] justify-between">
+                            <h2 class="text-[20px] lg:text-[24px] leading-[29px] font-semibold text-[#202124]" id="title">Create
+                                User Group</h2>
+                            <button command="close" commandfor="dialog1" class="cursor-pointer inline-block" id="CloseModalCancel"> <img
+                                    src="/public/img/close-modal.svg" alt=""></button>
+                        </div>
+                        <form action="/usergroup/newgroup" method="POST" id="membergroup_form">
+
+                        <input type="hidden" id="csrf" class="block w-full  h-[34px] bg-[#F7F7F5] rounded-[4px] p-[8px]" value="{{.csrf}}"
+                            name='csrf'>
+                            
+                       <input type="hidden" id="membergroup_id" class="block w-full  h-[34px] bg-[#F7F7F5] rounded-[4px] p-[8px]" value="{{.Id}}"
+                            name='membergroup_id'>
+                        <div>
+                            <div class="mb-[20px] last:mb-0">
+                                <div>
+                                    <label
+                                        class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">Group
+                                        Name</label>
+                                    <input type="text" placeholder="Enter your group name" name="membergroup_name"     id="membergroup_name" maxlength="25"
+                                        class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[48px] block px-[16px] text-base leading-[19px] font-normal placeholder:text-[#63789C] block w-full hover:outline-[4px] outline-[#f8ecfe] focus:border-[#704C9B]">
+                                </div>
+                            </div>
+
+                            <div class="mb-[20px] last:mb-0">
+                                <div>
+                                    <label
+                                        class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">Group
+                                     Description</label>
+                                    <textarea type="text" placeholder="Describe about this group" name="membergroup_desc" id="membergroup_desc" maxlength="250"
+                                        class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[120px] resize-none block p-[12px_16px] text-base leading-[19px] font-normal placeholder:text-[#63789C] block w-full hover:outline-[4px] outline-[#f8ecfe] focus:border-[#704C9B]"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-[10px] mb-[20px] last:mb-0">
+                                <input type="hidden" name="status" id="status_value" value="0">
+                                
+                                <input type="checkbox" id="status31"  class="hidden peer" >
+                                <label for="status31"
+                                    class="text-sm leading-[17px] font-semibold text-[#202732]">Status</label>
+                                <label for="status31"
+                                    class="w-[36px] h-[20px] rounded-[1000px] flex items-center bg-[#D3D3D3] relative cursor-pointer peer-checked:bg-[#4CAF50] peer-checked:[&amp;&gt;span]:translate-x-[16px]">
+                                    <span
+                                        class="block w-[16px] h-[16px] rounded-full bg-white absolute left-[2px] transition-all duration-200"></span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    </form>
+                    <div class="p-[0_30px_30px_30px] flex gap-[10px] justify-end">
+                        <button command="close" commandfor="dialog1" id="groupcalcelbtn"
+                            class="bg-[#F3F4F7] h-[40px] !px-[20px] rounded-[8px] text-base leading-[20px] font-medium text-[#202732] max-w-max cursor-pointer hover:border-[#704C9B] border border-solid border-transparent">Cancel</button>
+                        <button type="submit" id="save"
+                            class="dark-btn h-[40px] !px-[20px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] max-w-max cursor-pointer">Save</button>
+                        <button
+                            class="dark-btn h-[40px] !px-[20px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] max-w-max cursor-pointer"
+                            type="button" id="update" style="display: none;">Update</button>
+                    </div>
+                </el-dialog-panel>
+            </div>
+        </dialog>
+    </el-dialog>
+ {{template "footer" .}}   
+
+ <script src="/public/js/member/groups.js"></script>

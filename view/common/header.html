@@ -1,0 +1,210 @@
+{{define "header"}}
+{{$title :=.title}}
+<!DOCTYPE html>
+<html lang="en" style="--el-top-layer-scrollbar-offset: -15px; " class="!overflow-visible"  data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}}</title>
+    <link rel="stylesheet" href="/public/css/output.css">
+    <link rel="stylesheet" href="https://use.typekit.net/nlp4vzk.css">
+</head>
+
+<body class="font-inter overflow-x-hidden parent">
+    <main>
+        <!-- header -->
+        <header class="bg-[#704C9B] flex items-center max-lg:gap-[16px] h-[52px] sticky top-0 z-50">
+
+            <div class="p-[11px] h-full flex gap-[5px]">
+                <button command="show-modal" commandfor="drawer"
+                    class="flex justify-center items-center p-[4px] rounded cursor-pointer hover:bg-[#FFFFFF]/10 md:hidden min-w-[28px]">
+                    <img src="/public/img/menu.svg" alt="menu" class="max-w-[18px]">
+                </button>
+                <a href="/chat" class="flex">
+                    <img src="/public/img/logo-light.svg" alt="RAGFish Logo" class="block w-[42px]">
+                </a>
+            </div>
+
+            <div class="flex items-center grow px-[16px] md:px-[24px] h-full lg:ms-[125px]">
+                <!-- <div class="flex items-center relative w-full max-w-[350px] md:max-w-[391px] max-sm:hidden">
+                    <img src="/public/img/search.svg" alt="search" class="absolute left-[12px]">
+                    <input type="text" placeholder="Search"
+                        class="bg-[#FFFFFF] flex w-full h-[36px] rounded-[4px] h-[36px] ps-[42px] text-sm leading-[17px] font-normal placeholder:text-[#3C485E]">
+                </div> -->
+                <div class="flex gap-[16px] md:gap-[37px] items-center ms-auto  ">
+                    <!-- <div class="flex gap-[16px] md:gap-[20px] items-center">
+                        <a href="" class="grid p-[4px] rounded-full hover:bg-[#FFFFFF]/10">
+                            <img src="/public/img/settings.svg" alt="">
+                        </a>
+                        <a href="" class="grid p-[4px] rounded-full hover:bg-[#FFFFFF]/10">
+                            <img src="/public/img/notification.svg" alt="">
+                        </a>
+                    </div> -->
+                    <el-dropdown class="inline-flex ">
+                        {{if .Menu.ProfileImagePath}}
+                        <button class="inline-flex w-[32px] h-[32px] rounded-full cursor-pointer ">
+                            <img src="{{if .Menu.ProfileImagePath}}{{.Menu.ProfileImagePath}}{{else}}/public/img/profile.svg{{end}}"
+                                class="rounded-full" alt="">
+                        </button>
+                        {{else}}
+                        <button><div class="cursor-pointer w-[32px] h-[32px] rounded-full flex justify-center items-center bg-[#F5F5F5]">
+                    <span class="text-[14px] text-[#222222] font-normal">{{.Menu.NameString}}</span>
+                </div></button>{{end}}
+                        <el-menu anchor="bottom end" popover
+                            class="w-56 origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                            <div class="py-1">
+                                <a href="/settings/myprofile"
+                                    class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Account
+                                    settings</a>
+                                <a href="/settings/changepassword"
+                                    class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Change Password</a>
+                                <a href="/settings/aisettings"
+                                    class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">AI Model</a>
+
+                                <a href="/logout"
+                                    class="block w-full px-4 py-2 text-left text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Sign
+                                    out</a>
+
+                            </div>
+                        </el-menu>
+                    </el-dropdown>
+                </div>
+            </div>
+        </header>
+        <!-- body -->
+        <section class="grid md:grid-cols-[auto_1fr]">
+            <el-dialog
+                class=" w-[51px]  flex flex-col overflow-hidden items-center fixed md:sticky top-[52px] h-[calc(100dvh-52px)] md:!block not-open:hidden bg-transparent ">
+                <dialog id="drawer" aria-labelledby="drawer-title"
+                    class="fixed  max-md:w-[51px] top-[52px] md:!static md:!block start-0 not-open:hidden backdrop:hidden backdrop:bg-transparent grow flex flex-col overflow-hidden h-full bg-transparent">
+                    <div tabindex="0"
+                        class="absolute w-full md:!static focus:outline-none grow flex flex-col overflow-hidden h-full bg-transparent">
+                        <el-dialog-panel
+                            class="group/dialog-panel relative mr-auto block size-full max-w-md transform transition duration-500 ease-in-out data-closed:max-md:-translate-x-full  p-[16px_10px] bg-[#F8ECFE] sm:duration-700 grow flex flex-col overflow-hidden h-full">
+                            <div class="overflow-y-auto h-full flex flex-col [scrollbar-width:none] grow">
+                                <div
+                                    class="flex flex-col gap-[14px] last-of-type:mb-[0] last-of-type:pb-0 last-of-type:border-b-0 mb-[20px] pb-[20px] border-b border-solid border-[#EBDAF3]">
+                                    {{$Tabmenu :=.Tabmenu}}
+
+                                    {{range .Menu.TblModule}}
+                                    {{if ne .ModuleName "Settings"}}
+                                    {{if gt (len .SubModule) 0}}
+                                    {{if ne .Route ""}}
+                                    {{if eq .ModuleName "Agents"}}
+                                    <a href="/agents"
+                                        class="p-[6px] rounded-[8px] {{if eq $title .ModuleName}}[&.active]:bg-[#EBDAF3] active{{end}} hover:bg-[#EBDAF3]">
+                                        <img src="/public/img/create.svg" alt="create" class="min-w-[20px]">
+                                    </a>
+                                    {{end}}
+
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    {{range .Menu.TblModule}}
+                                    {{if ne .ModuleName "Settings"}}
+                                    {{if gt (len .SubModule) 0}}
+                                    {{if ne .Route ""}}
+                                    {{if eq .ModuleName "Chat"}}
+                                    <a href="/chat"
+                                        class="p-[6px] rounded-[8px] {{if eq $title .ModuleName}}[&.active]:bg-[#EBDAF3] active{{end}} hover:bg-[#EBDAF3]">
+                                        <img src="/public/img/chat.svg" alt="chat" class="min-w-[20px]">
+                                    </a>
+                                    {{end}}
+
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                             </div>
+                             <div class="flex flex-col gap-[14px] last-of-type:mb-[0] last-of-type:pb-0 last-of-type:border-b-0 mb-[20px] pb-[20px] border-b border-solid border-[#EBDAF3]">
+                                    {{$ModuleName:=.ModuleName}}
+                                    {{if .Menu.AssistantList}}
+                                    {{range .Menu.AssistantList}}
+
+                                    <a href="/app/{{.AssistantSlug}}/{{.UniqueId}}"
+                                        class="p-[6px] rounded-[8px] {{if eq $Tabmenu .UniqueId}}[&.active]:bg-[#EBDAF3] active{{end}} hover:bg-[#EBDAF3]">
+                                        <img src="{{if .ImagePath}}{{.ImagePath}}{{else}}/public/img/agent.svg{{end}}" alt="chat" class="min-w-[20px]">
+                                    </a>
+
+                                    {{end}}
+                                    {{end}}
+                               
+                             </div>
+                            </div>
+
+
+                            <div>
+                                <div
+                                    class="flex flex-col gap-[14px] last-of-type:mb-[0] last-of-type:pb-0 last-of-type:border-b-0 mb-[20px] pb-[20px] border-b border-solid border-[#EBDAF3]">
+                                   
+                                       {{range .Menu.TblModule}}
+                                    {{if ne .ModuleName "Settings"}}
+                                    {{if gt (len .SubModule) 0}}
+                                    {{if ne .Route ""}}
+                                    {{if eq .ModuleName "Users"}}
+                                    <a href="/user"
+                                        class="p-[6px] rounded-[8px] {{if eq $title .ModuleName}} [&.active]:bg-[#EBDAF3] active{{end}} hover:bg-[#EBDAF3] [&.active]:bg-[#EBDAF3]">
+                                        <img src="/public/img/group.svg" alt="group" class="min-w-[20px]">
+                                    </a>
+                                    {{end}}
+                                     {{if eq .ModuleName "Channels"}}
+                                    <a href="/channels"
+                                        class="p-[6px] rounded-[8px] {{if eq $title .ModuleName}} [&.active]:bg-[#EBDAF3] active{{end}} hover:bg-[#EBDAF3] [&.active]:bg-[#EBDAF3]">
+                                        <img src="/public/img/data.svg" alt="sdata" class="min-w-[20px]">
+                                    </a>
+                                             {{end}}
+
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    {{end}}
+                                    <!-- <el-dropdown class="inline-block relative">
+                                        <button
+                                            class="p-[6px] rounded-[8px] hover:bg-[#EBDAF3] [[aria-expanded='true']]:bg-[#EBDAF3] cursor-pointer">
+                                            <img src="/public/img/settings-dark.svg" alt="chat" class="min-w-[20px]">
+                                        </button>
+                                        <el-menu anchor="top start" popover
+                                            class="w-[170px] shadow-[0px_4px_10px_0px_#00000024] p-[4px] origin-bottom-right rounded-[8px] border border-solid border-[#DEE2E9] bg-white outline-0 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                                            <div class="">
+                                                <a href="/settings/myprofile"
+                                                    class="p-[8px_12px] hover:bg-[#F8ECFE] hover:text-[#704C9B] text-[13px] leading-[16px] font-normal text-[#202732] rounded block">Profile
+                                                    Setting</a>
+                                                <a href="/settings/changepassword"
+                                                    class="p-[8px_12px] hover:bg-[#F8ECFE] hover:text-[#704C9B] text-[13px] leading-[16px] font-normal text-[#202732] rounded block">Security</a>
+                                                <a href="/settings/aisettings"
+                                                    class="p-[8px_12px] hover:bg-[#F8ECFE] hover:text-[#704C9B] text-[13px] leading-[16px] font-normal text-[#202732] rounded block">AI
+                                                    Model</a>
+
+                                            </div>
+                                        </el-menu>
+                                    </el-dropdown> -->
+                                </div>
+                            </div>
+                        </el-dialog-panel>
+                    </div>
+                </dialog>
+            </el-dialog>
+
+
+            <div class="btn-group language-group langdata" style="display: none;">
+                {{$CurrentLanguage := .Menu.CurrentLanguage}}
+                <button type="button" class="dropdown-toggle" id="current-lang" data-bs-toggle="dropdown"
+                    aria-expanded="false" data-path="/{{$CurrentLanguage.JsonPath}}" data-id="{{$CurrentLanguage.Id}}">
+                   
+                    {{$CurrentLanguage.LanguageName}}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" id="lang-menu">
+                    {{$CurrentLanguage := .Menu.CurrentLanguage}}
+                    {{range .Menu.Languages}}
+                    {{if and (eq .IsStatus 1) (ne $CurrentLanguage.Id .Id)}}
+                    <li class="lang" data-path="/{{.JsonPath}}" data-id="{{.Id}}">
+                        <button class="dropdown-item" type="button"> 
+                            {{.LanguageName}}</button>
+                    </li>
+                    {{end}}
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}

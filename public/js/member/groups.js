@@ -1,0 +1,1156 @@
+const html = document.documentElement;
+
+const observer = new MutationObserver(() => {
+     if (html.style.paddingRight) {
+          html.style.paddingRight = '0px';
+     }
+});
+
+observer.observe(html, {
+     attributes: true,
+     attributeFilter: ['style']
+});
+
+
+// var languagedata
+
+var selectedcheckboxarr = []
+
+
+$(document).ready(async function () {
+
+     $('.Members').addClass('checked');
+
+     var languagepath = $('.language-group>button').attr('data-path')
+
+     await $.getJSON(languagepath, function (data) {
+
+          // languagedata = data
+          console.log(data);
+     })
+
+     if ($('.selectcheckbox').length === 0) {
+
+          $('.headingcheck').hide();
+     }
+})
+
+
+$(document).ready(function(){
+     var $textarea = $('#membergroup_desc');
+     var $errorMessage = $('#membergroup_desc-error');
+     var maxLength = 250;
+
+     $textarea.on('input', function () {
+          if ($(this).val().length >= maxLength) {
+               // Show error message
+               $errorMessage.text();
+          } else {
+               // Clear error message if under the limit
+               $errorMessage.text('');
+          }
+     });
+
+
+     $('#membergroup_desc').on('input', function () {
+
+          let lines = $(this).val().split('\n').length;
+
+          if (lines > 5) {
+
+               let value = $(this).val();
+
+               let linesArray = value.split('\n').slice(0, 5);
+
+               $(this).val(linesArray.join('\n'));
+          }
+     });
+})
+
+     $("#create_user_button").click(function(){
+          $("#membergroup_desc-error").empty();
+          $("#membergroup_name-error").hide();
+          $('#status31').trigger('click')
+
+     })
+
+
+// save btn function
+$('#save').click(function () {    
+
+     jQuery.validator.addMethod("duplicategrb", function (value) {
+
+          var result;
+          id = $("#membergroup_id").val()
+          console.log("check", id)
+          $.ajax({
+               url: "/usergroup/checknameinmembergrp",
+               type: "POST",
+               async: false,
+               data: { "membergroup_name": value, "membergroup_id": id, csrf: $("input[name='csrf']").val() },
+               datatype: "json",
+               caches: false,
+               success: function (data) {
+                    result = data.trim();
+               }
+          })
+          return result.trim() != "true"
+     })
+
+
+     jQuery.validator.addMethod("space", function (value, element) {
+          return $.trim(value).length > 0;
+     }, "* Enter valid content");
+
+
+
+     // form validation
+
+     $("#membergroup_form").validate({
+          rules: {
+               membergroup_name: {
+                    required: true,
+                    space: true,
+                    duplicategrb: true ,
+
+
+               },
+               membergroup_desc: {
+                    required: true,
+                    space: true,
+                    maxlength: 250,
+               }
+          },
+          messages: {
+               membergroup_name: {
+                    required: "* " + "Please Enter Group Name" ,
+                    space: "* " + "Please Enter valid Name",
+                    duplicategrb: "*" + "Group Name Already present"
+               },
+               membergroup_desc: {
+                    required: "* " + "Please Enter Group Description" ,
+                    space: "* " + "Please Enter valid Description",
+                    maxlength: "* " + "Description length lessthen 250",
+               }
+
+          },
+
+     });
+
+
+     var formcheck = $("#membergroup_form").valid();
+
+     if (formcheck == true) {
+          $('#membergroup_form')[0].submit();
+     }
+     else {
+          Validationcheck()
+          $(document).on('keyup', ".field", function () {
+               Validationcheck()
+          })
+
+     }
+
+     return false
+})
+
+
+// model status update 
+
+$("#status31").on("change", function () {
+
+     if ($(this).is(":checked")) {
+          $("#status_value").val(1);
+     } else {
+          $("#status_value").val(0);
+     }
+
+});
+
+
+
+
+
+// member group edit
+var edit;
+
+$(".editmembergroup").click(function () {
+     console.log("edit member");
+
+     $(".input-group").removeClass("input-group-error")
+
+     var url = window.location.search;
+     const urlpar = new URLSearchParams(url);
+     pageno = urlpar.get('page');
+
+     $("#title").text("Edit User Group")
+     var data = $(this).attr("data-id");
+     $("#membergroup_form").attr("action", "/usergroup/updategroup")
+
+     var edit = $(this).closest(".group-card");
+
+     // Get name & description
+
+     var name = edit.find("a").first().text().trim();
+     var desc = edit.find("div > p").first().text().trim();
+     var is_active = edit.find("input[type='checkbox']").is(":checked");
+
+
+
+     if (is_active) {
+          $("#status31").prop("checked", true);
+       
+     } else {
+          $("#status31").prop("checked", false);
+        
+     }
+
+     console.log("asduhfsjn",name ,desc)
+
+     $("input[name='membergroup_name']").val(name);
+     $("textarea[name='membergroup_desc']").val(desc);
+     $("#membergroup_id").val(data);
+     $("#update").show();
+     $("#save").hide();
+
+
+     $("#membergroup_name-error").hide();
+     $("#membergroup_desc-error").empty();
+     $("#memgrbpageno").val(pageno);
+});
+
+
+// cancel btn function
+
+$('#groupcalcelbtn').on('click', function () {
+     $("#membergroup_form").attr("action", "/usergroup/newgroup")
+     $("#membergroup_name").val("");
+     $("#membergroup_desc").val("");
+     $("#title").text("Create User Group")
+     $("#update").hide()
+     $("#save").show()
+})
+
+// cancel image x
+
+$('#CloseModalCancel').on('click', function () {
+     $("#membergroup_form").attr("action", "/usergroup/newgroup")
+     $("#membergroup_name").val("");
+     $("#membergroup_desc").val("");
+     $("#title").text("Create User Group")
+     $("#update").hide()
+     $("#save").show()
+})
+
+
+// new membergroup model open function
+
+$(document).on("click", "#add-btn , #clickadd", function () {
+     $("#title").text()
+     $("#membergroup_form").attr("action", "/admin/usergroup/newgroup")
+     $(".input-group").removeClass("input-group-error")
+
+     $("#membergroup_name-error").hide();
+     $("#membergroup_desc-error").empty();
+     $("#save").show();
+     $("#update").hide();
+     $("#membergroup_name").val("");
+     $("#membergroup_desc").val("");
+     $(".member-update").hide();
+     $(".member-save").show();
+     $(".lengthErr").addClass("hidden");
+})
+
+
+// delete model popup function
+
+$(document).on('click', '#delete-btn', function () {
+
+     var MemberGroupId = $(this).attr("data-id");
+
+     var del = $(this).closest(".group-card");
+
+     console.log("uywkfhwjr,fhnwikfuywehfuie", MemberGroupId, del)
+     $.ajax({
+          url: '/usergroup/chkmemgrphavemember',
+          type: 'POST',
+          async: false,
+          data: { "id": MemberGroupId,csrf: $("input[name='csrf']").val()},
+          dataType: 'json',
+          success: function (data){
+               if(data.value){
+                    $('#dynamicImage').attr('src', '/public/img/delete-icon.svg')
+                    $('#delid').addClass("hidden");
+                    $('#dltCancelBtn').text();
+                    $("#content").text()
+                      $('.deldesc').text('This user group contains Users and cannot be deleted')
+                     
+               }else{
+                  
+                     $('.deldesc').text('Are you sure you want to delete this UserGroup')
+                    $('#delid').removeClass("hidden")
+                    $('#content').text();
+                    $('#dltCancelBtn').text();
+
+               }
+          }
+     })
+     var url = window.location.search;
+     const urlpar = new URLSearchParams(url);
+     pageno = urlpar.get('page');
+   $('.deltitle').text('Delete UserGroup?')
+
+  $('#dltCancelBtn').text("Cancel")
+     $('.delname').text(del.find('td:eq(1)').text())
+   
+
+
+     if (pageno == null) {
+
+          $('#delid').attr('href', '/usergroup/deletegroup?id=' + MemberGroupId);
+
+     } else {
+          $('#delid').attr('href', '/usergroup/deletegroup?id=' + MemberGroupId + "&page=" + pageno);
+
+     }
+
+});
+
+
+// delete model cancel function
+
+$("#deleteModal").on("hide.bs.modal", function () {
+     $('#delid').removeClass('checkboxdelete');
+     $('#delid').removeClass('selectedunpublish');
+     $('.delname').text("");
+     $("#delid").attr('href', '');
+
+})
+
+// member group status function
+
+function MemberStatus(id) {
+     $('#cb' + id).on('change', function () {
+          this.value = this.checked ? 1 : 0;
+     }).change();
+     var isactive = $('#cb' + id).val();
+
+     $.ajax({
+          url: '/usergroup/groupisactive',
+          type: 'POST',
+          async: false,
+          data: { "id": id, "isactive": isactive, csrf: $("input[name='csrf']").val() },
+          dataType: 'json',
+          cache: false,
+          success: function (result) {
+               if (result) {
+
+                    notify_content = `<ul class="fixed top-[56px] right-[16px] z-[1000] grid gap-[8px]"><li><div class="toast-msg flex max-sm:max-w-[300px]  relative items-start gap-[8px] rounded-[2px] p-[12px_20px] border-l-[4px] border-[#278E2B] bg-[#E2F7E3]"> <a href="javascript:void(0)" class="absolute right-[8px] top-[8px]" id="cancel-notify"> <img src="/public/img/close-toast.svg" alt="close"> </a>` + `<div> <img src = "/public/img/toast-success.svg" alt = "toast success"></div> <div> <h3 class="text-[#278E2B] text-normal leading-[17px] font-normal mb-[5px] ">Success</h3> <p class="text-[#262626] text-[12px] font-normal leading-[15px] " > </p ></div ></div ></li></ul> `;
+                    $(notify_content).insertBefore(".header-rht");
+                    setTimeout(function () {
+                         $('.toast-msg').fadeOut('slow', function () {
+                              $(this).remove();
+                         });
+                    }, 5000); 
+               } else {
+
+                    notify_content = '<div class="toast-msg dang-red"><a id="cancel-notify" ><img src="/public/img/x-black.svg" alt="" class="rgt-img" /></a><img src="/public/img/danger-group-12.svg" alt="" class="left-img" /><span>' +  + '</span></div>';
+                    $(notify_content).insertBefore(".header-rht");
+                    setTimeout(function () {
+                         $('.toast-msg').fadeOut('slow', function () {
+                              $(this).remove();
+                         });
+                    }, 5000); 
+
+               }
+          }
+     });
+}
+
+
+
+// const memberGroupName = document.getElementById('membergroup_name');
+// const memberGroupDesc = document.getElementById('membergroup_desc');
+// const inputGroup = document.querySelectorAll('.input-group');
+
+
+// memberGroupName.addEventListener('focus', () => {
+
+//      memberGroupName.closest('.input-group').classList.add('focus');
+// });
+
+// memberGroupDesc.addEventListener('focus', () => {
+
+//      memberGroupDesc.closest('.input-group').classList.add('focus');
+// });
+// memberGroupName.addEventListener('blur', () => {
+//      memberGroupName.closest('.input-group').classList.remove('focus');
+// });
+
+// memberGroupDesc.addEventListener('blur', () => {
+//      memberGroupDesc.closest('.input-group').classList.remove('focus');
+// });
+
+// update function
+
+$('#update').click(function () {
+
+
+     jQuery.validator.addMethod("duplicategrb", function (value) {
+
+          var result;
+          id = $("#membergroup_id").val()
+          console.log("check", id)
+          $.ajax({
+               url: "/usergroup/checknameinmembergrp",
+               type: "POST",
+               async: false,
+               data: { "membergroup_name": value, "membergroup_id": id, csrf: $("input[name='csrf']").val() },
+               datatype: "json",
+               caches: false,
+               success: function (data) {
+                    result = data.trim();
+               }
+          })
+          return result.trim() != "true"
+     })
+     jQuery.validator.addMethod("space", function (value, element) {
+          return $.trim(value).length > 0;
+     }, "* Enter valid content");
+
+
+
+     $("#membergroup_form").validate({
+          rules: {
+               membergroup_name: {
+                    required: true,
+                    space: true,
+                    duplicategrb: true
+
+               },
+               membergroup_desc: {
+                    required: true,
+                    space: true,
+                    maxlength: 250,
+               }
+          },
+          messages: {
+               membergroup_name: {
+                    required: "* " ,
+                    space: "* " ,
+                    duplicategrb: "*" 
+               },
+               membergroup_desc: {
+                    required: "* " ,
+                    space: "* " ,
+                    maxlength: "* " 
+
+               }
+
+          },
+
+     });
+
+     var formcheck = $("#membergroup_form").valid();
+     if (formcheck == true) {
+          $('#membergroup_form')[0].submit();
+     }
+     else {
+          Validationcheck()
+          $(document).on('keyup', ".field", function () {
+               Validationcheck()
+          })
+     }
+
+     return false
+
+})
+
+
+function Validationcheck() {
+
+     if ($('#membergroup_name').hasClass('error')) {
+          $('#grpname').addClass('input-group-error');
+     } else {
+          $('#grpname').removeClass('input-group-error');
+     }
+
+     if ($('#membergroup_desc').hasClass('error')) {
+          $('#grpdesc').addClass('input-group-error');
+     } else {
+          $('#grpdesc').removeClass('input-group-error');
+     }
+}
+
+
+
+// search functions strat //
+
+/*search redirect home page */
+
+$(document).on('keyup', '#searchmemgroup', function (event) {
+    const searchInput = $(this).val();
+
+    if (event.key === 'Backspace' && window.location.href.indexOf("keyword") > -1) {
+
+        if ($(this).val() == "") {
+
+            window.location.href = "/usergroup/";
+        }
+    }
+
+    $('.searchClosebtn').toggleClass('hidden', searchInput === "");
+
+})
+
+$(document).on("click", ".Closebtn", function () {
+     $(".search").val('')
+     $(".Closebtn").addClass("hidden")
+     $(".SearchClosebtn").removeClass("hidden")
+     $(".srchBtn-togg").removeClass("pointer-events-none")
+   })
+
+   $(document).on("click", ".searchClosebtn", function () {
+     $(".search").val('')
+     window.location.href = "/usergroup/"
+   })
+
+   $(document).ready(function () {
+
+     $('.search').on('input', function () {
+         if ($(this).val().length >= 1) {
+             var value=$(".search").val();
+             $(".Closebtn").removeClass("hidden")
+             $(".srchBtn-togg").addClass("pointer-events-none")
+             $(".SearchClosebtn").addClass("hidden")
+         } else {
+             $(".SearchClosebtn").removeClass("hidden")
+             $(".Closebtn").addClass("hidden")
+             $(".srchBtn-togg").removeClass("pointer-events-none")
+         }
+     });
+   })
+   
+   $(document).on("click", ".SearchClosebtn", function () {
+     $(".SearchClosebtn").addClass("hidden")
+     $(".transitionSearch").removeClass("w-[300px] justify-start p-2.5 border border-[#ECECEC] rounded-sm gap-3 overflow-hidden")
+     $(".transitionSearch").addClass("w-[32px]")
+   
+     
+   })
+   
+   $(document).on("click", ".searchopen", function () {
+   
+     $(".SearchClosebtn").removeClass("hidden")
+     
+   })
+
+// search functions end //
+
+
+
+$(document).keydown(function (event) {
+
+     if (event.ctrlKey && event.key === '/') {
+
+          $("#searchmemgroup").focus().select();
+     }
+});
+
+
+$('form[class=filterform]>img').click(function () {
+
+     if ($(this).siblings('input[name=keyword]').val() != "" && $(this).parents('.transitionSearch').hasClass('active')) {
+
+          var keyword = $(this).siblings('input[name=keyword]').val()
+
+          window.location.href = "/admin/user/?keyword=" + keyword
+     }
+})
+
+
+$("dialog").on("close", function () {
+
+     $("#membergroup_form")[0].reset();
+     $("#membergroup_id").val("");
+
+});
+
+
+
+// checkbox select function
+
+// $(document).on('click', '.selectcheckbox', function () {
+
+//      console.log("checkbox selected")
+
+//      memberid = $(this).attr('data-id')
+
+//      console.log("selectcheckbox id ", memberid)
+
+//      var status = $(this).parents('td').siblings('td').find('.tgl-light').val();
+
+//      var hasDelId = $(this).parents('td').siblings("td").find('#delete-btn').length > 0;
+//      var statusid = $(this).parents('td').siblings('td').find('.tgl-light').length > 0
+
+//      console.log(statusid,"statuiddd")
+
+
+//      if (hasDelId) {
+
+//          $('#seleccheckboxdelete').show()
+//      } else {
+//          $('#seleccheckboxdelete').hide()
+//      }
+
+//      if (statusid) {
+//          console.log("chekckk")
+//          $('#unbulishslt').show()
+
+//      } else {
+//          $('#unbulishslt').hide()
+
+//          $('#seleccheckboxdelete').removeClass('border-r border-[#717171] mr-[8px] pr-[8px]')
+//      }
+
+
+//      if ($(this).prop('checked')) {
+
+//           selectedcheckboxarr.push({ "memberid": memberid, "status": status })
+
+//      } else {
+
+//           const index = selectedcheckboxarr.findIndex(item => item.memberid === memberid);
+
+//           if (index !== -1) {
+
+//                selectedcheckboxarr.splice(index, 1);
+//           }
+
+//           $('#Check').prop('checked', false)
+
+//      }
+//      console.log("selectedcheckboxarr ", selectedcheckboxarr)
+
+//      if (selectedcheckboxarr.length != 0) {
+//           $('.selected-numbers').removeClass("hidden")
+
+//           if (selectedcheckboxarr.length == 1) {
+//                $('#deselectid').text(deselect)
+//           } else if (selectedcheckboxarr.length > 1) {
+//                $('#deselectid').text(deselectall)
+//           }
+
+//           var allSame = selectedcheckboxarr.every(function (item) {
+//                return item.status === selectedcheckboxarr[0].status;
+//           });
+
+//           var setstatus
+//           var img;
+
+//           if (selectedcheckboxarr[0].status === '1') {
+
+//                setstatus = Memberss.deactive;
+
+//                img = "/public/img/In-Active.svg";
+
+//           } else if (selectedcheckboxarr[0].status === '0') {
+
+//                setstatus = Memberss.active;
+
+//                img = "/public/img/Active.svg";
+
+//           }
+
+//           var htmlContent = '';
+
+//           if (allSame) {
+
+//                htmlContent = '<img style="width: 14px; height: 14px;" src="' + img + '" >'  + '<span class="max-sm:hidden @[550px]:inline-block hidden">'+setstatus+'</span>';
+
+//           } else {
+
+//                htmlContent = '';
+
+//           }
+
+//           $('#unbulishslt').html(htmlContent);
+
+//           var items
+
+//           if (selectedcheckboxarr.length==1){
+
+//               items ="Item Selected"
+//           }else{
+
+//               items = itemselected
+//           }
+//           $('.checkboxlength').text(selectedcheckboxarr.length + " " + items)
+
+//           if (!allSame || !statusid) {
+
+//                $('#seleccheckboxdelete').removeClass('border-r border-[#717171] mr-[8px] pr-[8px]')
+
+//                $('.unbulishslt').html("")
+//           } else {
+
+//                $('#seleccheckboxdelete').addClass('border-r border-[#717171] mr-[8px] pr-[8px]')
+//           }
+
+
+//      } else {
+//           $('.selected-numbers').addClass("hidden")
+//      }
+
+//      var allChecked = true;
+
+//      $('.selectcheckbox').each(function () {
+
+//           if (!$(this).prop('checked')) {
+
+//                allChecked = false;
+
+//                return false;
+//           }
+//      });
+
+//      $('#Check').prop('checked', allChecked);
+
+//      console.log(selectedcheckboxarr, "checkkkk")
+// })
+
+var selectedcheckboxarr = [];
+
+$(document).on('click', '.selectcheckbox', function () {
+
+     var memberid = $(this).data('id');
+     var $card = $(this).closest('.group-card');
+
+     // since toggle itself is status
+     var status = $(this).prop('checked') ? '1' : '0';
+
+     // check if delete button exists in this card
+     // var hasDeleteBtn = $card.find('#delete-btn').length > 0;
+
+     // show/hide bulk delete button
+     // $('#seleccheckboxdelete').toggle(hasDeleteBtn);
+
+     // ADD OR REMOVE FROM ARRAY
+     if ($(this).prop('checked')) {
+
+          if (!selectedcheckboxarr.some(item => item.memberid == memberid)) {
+               selectedcheckboxarr.push({
+                    memberid: memberid,
+                    status: status
+               });
+          }
+
+     } else {
+
+          selectedcheckboxarr = selectedcheckboxarr.filter(item => item.memberid != memberid);
+     }
+
+    
+     if (selectedcheckboxarr.length > 0) {
+
+          $('.selected-numbers').removeClass("hidden");
+
+          $('#deselectid').text(
+               selectedcheckboxarr.length === 1
+                    ? "deselect"
+                    : "deselectall"
+          );
+
+          // Check if all statuses same
+          var allSame = selectedcheckboxarr.every(item =>
+               item.status === selectedcheckboxarr[0].status
+          );
+
+          var htmlContent = '';
+
+          if (allSame) {
+
+               var setstatus = selectedcheckboxarr[0].status === '1'
+                    ? "deactive"
+                    : "active";
+
+               var img = selectedcheckboxarr[0].status === '1'
+                    ? "/public/img/In-Active.svg"
+                    : "/public/img/Active.svg";
+
+               htmlContent =
+                    '<img style="width:14px;height:14px;" src="' + img + '">' +
+                    '<span class="max-sm:hidden @[550px]:inline-block hidden">' +
+                    setstatus +
+                    '</span>';
+          }
+
+          $('#unbulishslt').html(htmlContent);
+
+          // Item count text
+          var items = selectedcheckboxarr.length === 1
+               ? "Item Selected"
+               : "Item not selected"
+
+          $('.checkboxlength').text(selectedcheckboxarr.length + " " + items);
+
+          // Border styling
+          if (allSame) {
+               $('#seleccheckboxdelete')
+                    .addClass('border-r border-[#717171] mr-[8px] pr-[8px]');
+          } else {
+               $('#seleccheckboxdelete')
+                    .removeClass('border-r border-[#717171] mr-[8px] pr-[8px]');
+          }
+
+     } else {
+
+          $('.selected-numbers').addClass("hidden");
+          $('#unbulishslt').html('');
+          $('#seleccheckboxdelete')
+               .removeClass('border-r border-[#717171] mr-[8px] pr-[8px]');
+     }
+
+     console.log(selectedcheckboxarr, "group selection");
+
+});
+
+
+
+
+//  //ALL CHECKBOX CHECKED FUNCTION//
+
+$(document).on('click', '#Check', function () {
+
+     selectedcheckboxarr = []
+
+     var isChecked = $(this).prop('checked');
+
+     var statusid =$(this).parents('th').siblings('.statushead').length > 0;
+
+     var dperid =$("#dperid").val()
+
+     if (statusid){
+
+          $('#unbulishslt').show();
+     }else{
+          $('#unbulishslt').hide();
+          $('#seleccheckboxdelete').removeClass('border-r border-[#717171] mr-[8px] pr-[8px]')
+     }
+
+     if (dperid=="true"){
+
+          $("#seleccheckboxdelete").show()
+     }else{
+          $('#seleccheckboxdelete').hide();
+     }
+
+     if (isChecked) {
+
+          $('.selectcheckbox').prop('checked', isChecked);
+
+          $('.selectcheckbox').each(function () {
+
+               memberid = $(this).attr('data-id')
+
+               var status = $(this).parents('td').siblings('td').find('.tgl-light').val();
+
+               console.log(status, "state");
+
+               selectedcheckboxarr.push({ "memberid": memberid, "status": status })
+          })
+
+          if (selectedcheckboxarr.length != 0) {
+               const deselectText = selectedcheckboxarr.length == 1 ? deselect : deselectall;
+               $('#deselectid').text(deselectText);
+               $('.selected-numbers').removeClass("hidden")
+          } else {
+               $('.selected-numbers').addClass("hidden")
+          }
+          var allSame = selectedcheckboxarr.every(function (item) {
+
+               return item.status === selectedcheckboxarr[0].status;
+          });
+
+          console.log(allSame, "allsome");
+
+          var setstatus
+
+          var img
+          if (selectedcheckboxarr[0].status === '1') {
+
+               // setstatus = languagedata.Memberss.deactive;
+
+               img = "/public/img/In-Active.svg";
+
+          } else if (selectedcheckboxarr[0].status === '0') {
+
+               // setstatus = languagedata.Memberss.active;
+
+               img = "/public/img/Active.svg";
+          }
+
+          var htmlContent = '';
+
+          if (!allSame || !statusid) {
+
+               htmlContent = '';
+
+               $('#seleccheckboxdelete').removeClass('border-r border-[#717171] mr-[8px] pr-[8px]')
+
+
+          } else {
+
+
+               htmlContent = '<img style="width: 14px; height: 14px;" src="' + img + '" >'  + '<span class="max-sm:hidden @[550px]:inline-block hidden">'+setstatus+'</span>';
+
+               $('#seleccheckboxdelete').addClass('border-r border-[#717171] mr-[8px] pr-[8px]')
+
+          }
+
+          $('#unbulishslt').html(htmlContent);
+
+          $('.checkboxlength').text(selectedcheckboxarr.length + " " )
+
+     } else {
+          $('.selected-numbers').addClass("hidden")
+
+          selectedcheckboxarr = []
+
+          $('.selectcheckbox').prop('checked', isChecked);
+     }
+
+})
+
+
+// delete model content upadte
+
+$(document).on('click','#seleccheckboxdelete', function () {
+
+     $.ajax({
+          url: '/usergroup/chkmemgrphavemember',
+          type: 'POST',
+          async: false,
+          data: { "membergrpids": JSON.stringify(selectedcheckboxarr),
+                   csrf: $("input[name='csrf']").val(),},
+          dataType: 'json',
+          success: function (data){
+               if(data.value){
+
+                    if (selectedcheckboxarr.length > 1) {
+
+                         $('.deltitle').text()
+
+                         $('#content').text()
+
+                    } else {
+
+                         $('.deltitle').text()
+
+                         $('#content').text()
+                    }
+                    $('#dynamicImage').attr('src', '/public/img/delete-icon.svg')
+
+
+                     $('#delid').addClass("hidden");
+                    $('#dltCancelBtn').text();
+
+               }else{
+
+                    if (selectedcheckboxarr.length > 1) {
+
+                         $('.deltitle').text()
+
+                         $('#content').text()
+
+                    } else {
+
+                         $('.deltitle').text()
+
+                         $('#content').text()
+                    }
+                    $('#dynamicImage').attr('src', '/public/img/delete-icon.svg')
+
+                    $('#delid').removeClass("hidden")
+                    $('#dltCancelBtn').text();
+
+               }
+          }
+     })
+
+
+
+     $("#delid").text($(this).text());
+     $('#delid').addClass('checkboxdelete')
+})
+
+
+// status model content update
+
+$(document).on('click', '#unbulishslt', function () {
+
+     if (selectedcheckboxarr.length > 1) {
+
+          $('.deltitle').text($(this).text() + " " )
+
+          $('#content').text( + $(this).text() + " " )
+     } else {
+
+          $('.deltitle').text($(this).text() + " " )
+
+          $('#content').text(+ $(this).text() + " " )
+     }
+     $('#dynamicImage').attr('src', '/public/img/info-icon.svg')
+
+     $("#delid").text($(this).text());
+     $('#delid').addClass('selectedunpublish')
+
+})
+
+
+//MULTI SELECT DELETE FUNCTION//
+
+$(document).on('click', '.checkboxdelete', function () {
+
+     var url = window.location.href;
+
+     console.log("url", url)
+
+     var pageurl = window.location.search
+
+     const urlpar = new URLSearchParams(pageurl)
+
+     pageno = urlpar.get('page')
+
+     $('.selected-numbers').hide()
+     $.ajax({
+          url: '/usergroup/deleteselectedmembergroup',
+          type: 'post',
+          dataType: 'json',
+          async: false,
+          data: {
+               "memberids": JSON.stringify(selectedcheckboxarr),
+               csrf: $("input[name='csrf']").val(),
+               "page": pageno
+
+
+          },
+          success: function (data) {
+
+
+               if (data.value == true) {
+
+                    setCookie("get-toast", "Member Group Deleted Successfully")
+
+                    window.location.href = data.url
+               } else {
+
+                    window.location.href = data.url
+
+               }
+
+          }
+     })
+
+})
+
+
+//Deselectall function//
+
+$(document).on('click', '#deselectid', function () {
+
+     $('.selectcheckbox').prop('checked', false)
+
+     $('#Check').prop('checked', false)
+
+     selectedcheckboxarr = []
+
+     $('.selected-numbers').addClass("hidden")
+
+})
+
+
+//multi select active and deactive function//
+
+$(document).on('click', '.selectedunpublish', function () {
+
+     var url = window.location.href;
+
+     console.log("url", url)
+
+     var pageurl = window.location.search
+
+     const urlpar = new URLSearchParams(pageurl)
+
+     pageno = urlpar.get('page')
+
+     $('.selected-numbers').hide()
+     $.ajax({
+          url: '/usergroup/multiselectmembergroup',
+          type: 'post',
+          dataType: 'json',
+          async: false,
+          data: {
+               "memberids": JSON.stringify(selectedcheckboxarr),
+               csrf: $("input[name='csrf']").val(),
+               "page": pageno
+
+
+          },
+          success: function (data) {
+
+
+               if (data.value == true) {
+
+                    setCookie("get-toast", "memgrpstatusnotify")
+
+                    window.location.href = data.url
+               } else {
+
+                    setCookie("Alert-msg", "Internal Server Error")
+
+               }
+
+          }
+     })
+
+
+})
+
+
+// Group name limit of 25 char
+
+$(document).on('keyup', '.checklength', function () {
+
+     var inputVal = $(this).val()
+
+     var inputLength = inputVal.length
+
+     if (inputLength == 25) {
+          $(this).siblings('.lengthErr').removeClass('hidden')
+     } else {
+          $(this).siblings('.lengthErr').addClass('hidden')
+     }
+
+})
+
+
+// Listen for the native dialog close event
+$("#dialog1").on("close", function () {
+
+   
+     $("#membergroup_form")[0].reset();
+
+     
+     $("#membergroup_id").val("");
+
+   
+     $("#title").text("Create User Group");
+
+    
+     $("#membergroup_form").attr("action", "/usergroup/newgroup");
+
+     
+     $("#status_value").val("0");
+
+});

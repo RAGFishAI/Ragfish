@@ -1,0 +1,291 @@
+{{template "header" .}}
+{{template "agentheader" .}}
+
+
+        {{$assistant := .assistant}}
+
+        {{$csrf := .csrf}} 
+
+    {{$openaiActive := 0}}
+    {{$claudeActive := 0}}
+    {{$openai_model_id := ""}}
+    {{$claude_model_id := ""}}
+    {{$openai_model_val := ""}}
+    {{$claude_model_val := ""}}
+
+ 
+
+
+{{range .GetAssistantModelsWithDetails}}
+
+    {{if eq .Provider "openai"}}
+    {{$openaiActive = .IsActive}}
+    {{$openai_model_id = .Id}}
+
+                
+    {{range .Details}}
+    
+    {{$openai_model_val = .ModelName}}
+
+    {{end}}
+
+
+    
+    {{else if eq .Provider "claudeai"}}
+    {{$claudeActive = .IsActive}}
+    {{$claude_model_id = .Id}}
+
+                {{range .Details}}
+                {{$claude_model_val = .ModelName}}
+                
+                {{end}}
+   
+    
+    {{end}}
+{{end}}
+
+
+ <div id="default-styled-tab-content" class="grow flex flex-col main_div">
+
+                        
+
+                     
+                    
+                        <div class="p-[16px] max-sm:p-[24px_16px] grow flex flex-col" id="styled-modals" role="tabpanel"
+                            aria-labelledby="settings-tab">
+                            {{if .Aimodels}}
+                            <div class="rounded-[8px] overflow-auto">
+                                <div class="min-w-[768px]">
+                                    <div class="grid grid-cols-[200px_1fr_200px] p-[12px_20px]">
+                                        <h3 class="text-sm leading-[20px] font-semibold text-[#4F607D]">AI PROVIDER</h3>
+                                        <h3 class="text-sm leading-[20px] font-semibold text-[#4F607D]">MODELS</h3>
+                                        <h3 class="text-sm leading-[20px] font-semibold text-[#4F607D] text-end">ENABLE
+                                            / DISABLE
+                                        </h3>
+                                    </div>
+                                    <div class="flex flex-col gap-[12px]">
+
+                                        <!-- OpenAI -->
+
+                                        
+                                    
+
+                                        {{range .Aimodels}}
+                                        {{$model := .}}
+                                       {{ if eq .AIModule "openai"}}
+                                  
+                                        <div
+                                            class="grid grid-cols-[200px_1fr_60px] p-[12px_20px] rounded-[12px] bg-[#F9F9F9] border border-[#E0E4EB]">
+                                            <a href="#" class="flex items-center gap-[12px] hover:underline">
+                                                <div
+                                                    class="w-[32px] h-[32px] rounded-full bg-white grid place-items-center">
+                                                    <img src="/public/img/open-ai.svg" alt="">
+                                                </div>
+                                                <p class="text-[14px] leading-[17px] font-semibold text-[#202732]">Open
+                                                    AI</p>
+                                            </a>
+                                           
+                                   
+                                            
+                                            <div class="flex gap-[24px] flex-wrap lg:gap-[50px]">
+                                                {{range .AimoduleArr}}
+                                                
+                                               
+                                                <label class="flex items-center gap-[10px] cursor-pointer relative">
+                                                    <input type="checkbox" {{if eq $openaiActive 0}}disabled{{end}}
+                                                     {{if and (eq $openaiActive 1) (eq .  $openai_model_val)}}checked{{end}}  class="peer cursor-pointer absolute inset-0 opacity-0 openai_checkbox openairadio" onclick="modelFunc(this)" AssistantModelId="{{$openai_model_id}}"  csrf="{{$csrf}}">
+                                                   
+                                                <img src="/public/img/Radio Default state.svg" class="peer-checked:hidden">
+                                                <img src="/public/img/Radio Active state.svg" class="hidden peer-checked:block">
+                                                    <span class=" OpenaiModel_val text-[13px] text-[#202732]  {{if eq $openaiActive 1}}{{else}}opacity-40{{end}}">{{.}}</span>
+                                                </label>
+                                                {{end}}
+
+                                                
+
+                                                <!-- <label class="flex items-center gap-[10px] cursor-pointer relative">
+                                                    <input type="checkbox" class="peer absolute inset-0 opacity-0"
+                                                        checked>
+                                                    <img src="/public/img/unchecked-rounded.svg"
+                                                        class="peer-checked:hidden min-w-[15px]">
+                                                    <img src="/public/img/check-rounded.svg"
+                                                        class="hidden peer-checked:block min-w-[15px]">
+                                                    <span class="text-[13px] text-[#202732]">gpt-4.0</span>
+                                                </label>
+
+                                                <label class="flex items-center gap-[10px] cursor-pointer relative">
+                                                    <input type="checkbox" class="peer absolute inset-0 opacity-0"
+                                                        checked>
+                                                    <img src="/public/img/unchecked-rounded.svg"
+                                                        class="peer-checked:hidden min-w-[15px]">
+                                                    <img src="/public/img/check-rounded.svg"
+                                                        class="hidden peer-checked:block min-w-[15px]">
+                                                    <span class="text-[13px] text-[#202732]">gpt-4.1</span>
+                                                </label>
+
+                                                <label class="flex items-center gap-[10px] cursor-pointer relative">
+                                                    <input type="checkbox" class="peer absolute inset-0 opacity-0"
+                                                        checked>
+                                                    <img src="/public/img/unchecked-rounded.svg"
+                                                        class="peer-checked:hidden min-w-[15px]">
+                                                    <img src="/public/img/check-rounded.svg"
+                                                        class="hidden peer-checked:block min-w-[15px]">
+                                                    <span class="text-[13px] text-[#202732]">gpt-4.5</span>
+                                                </label> -->
+                                            </div>
+
+                                            <div class="flex justify-end">
+                                                <input type="checkbox" id="openai_status" class="hidden peer" ProviderId="{{.Id}}" Provider="{{.AIModule}}" AssistantId="{{$assistant.Id}}" csrf="{{$csrf}}" 
+                                                {{if eq $openaiActive 1}}checked{{end}}>
+                                                <label for="openai_status" class="w-[36px] h-[20px] rounded-[1000px] flex items-center bg-[#D3D3D3] relative cursor-pointer peer-checked:bg-[#4CAF50] peer-checked:[&amp;&gt;span]:translate-x-[16px]
+">
+                                                    <span
+                                                        class="block w-[16px] h-[16px] transition-all duration-200 rounded-full bg-white absolute left-[2px] "></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        {{end}}
+
+                                       
+
+                                        <!-- Claude -->
+
+                                        {{ if eq .AIModule "claudeai"}}
+                                      <div
+                                            class="grid grid-cols-[200px_1fr_60px] p-[12px_20px] rounded-[12px] bg-[#F9F9F9] border border-[#E0E4EB]">
+                                            <div class="flex items-center gap-[12px]">
+                                                <div
+                                                    class="w-[32px] h-[32px] rounded-full bg-white grid place-items-center">
+                                                    <img src="/public/img/claude.svg" alt="">
+                                                </div>
+                                                <p class="text-[14px] font-semibold text-[#202732]">Claude</p>
+                                            </div>
+
+                                            <div class="flex gap-[24px]">
+                                                {{range .AimoduleArr}}
+                                                <label class="flex items-center gap-[10px] relative cursor-pointer">
+                                                    <input type="checkbox" {{if eq $claudeActive 0}}disabled{{end}}
+                                                    {{if and (eq $claudeActive 1) (eq . $claude_model_val)}}checked{{end}} class="peer cursor-pointer absolute inset-0 opacity-0 claudeai_checkbox claudeairadio" onclick="modelFunc(this)" AssistantModelId="{{$claude_model_id}}"  csrf="{{$csrf}}">
+                                                    <img src="/public/img/Radio Default state.svg" class="peer-checked:hidden">
+                                                    <img src="/public/img/Radio Active state.svg"
+                                                        class="hidden peer-checked:block">
+                                                    <span class="text-[13px] text-[#202732]   {{if eq $claudeActive 1}}{{else}}opacity-40{{end}}">{{.}}</span>
+                                                </label>
+                                                {{end}}
+
+                                                <!-- <label class="flex items-center gap-[10px] relative cursor-pointer">
+                                                    <input type="checkbox" class="peer absolute inset-0 opacity-0">
+                                                    <img src="/public/img/unchecked-rounded.svg" class="peer-checked:hidden">
+                                                    <img src="/public/img/check-rounded.svg"
+                                                        class="hidden peer-checked:block">
+                                                    <span class="text-[13px] text-[#202732]">Gemini 1.5 Pro</span>
+                                                </label>
+
+                                                <label class="flex items-center gap-[10px] relative cursor-pointer">
+                                                    <input type="checkbox" class="peer absolute inset-0 opacity-0">
+                                                    <img src="/public/img/unchecked-rounded.svg" class="peer-checked:hidden">
+                                                    <img src="/public/img/check-rounded.svg"
+                                                        class="hidden peer-checked:block">
+                                                    <span class="text-[13px] text-[#202732]">Gemini 2.0 Pro</span>
+                                                </label> -->
+                                            </div>
+
+
+
+                                            <div class="flex justify-end">
+                                                <input type="checkbox" id="claude_status"  class="hidden peer cursor-pointer" ProviderId="{{.Id}}" Provider="{{.AIModule}}" AssistantId="{{$assistant.Id}}" csrf="{{$csrf}}" {{if eq $claudeActive 1}}checked{{end}}>
+                                                <label for="claude_status" class="w-[36px] h-[20px] rounded-[1000px] flex items-center bg-[#D3D3D3] relative cursor-pointer peer-checked:bg-[#4CAF50] peer-checked:[&amp;&gt;span]:translate-x-[16px]
+">
+                                                    <span
+                                                        class="block w-[16px] h-[16px] transition-all duration-200 rounded-full bg-white absolute left-[2px]" ></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {{end}}
+
+                                        <!-- Gemini -->
+
+                                        {{ if eq .AIModule "gemini"}}
+                                         <div
+                                            class="grid grid-cols-[200px_1fr_60px] p-[12px_20px] rounded-[12px] bg-[#F9F9F9] border border-[#E0E4EB]">
+                                            <div class="flex items-center gap-[12px]">
+                                                <div
+                                                    class="w-[32px] h-[32px] rounded-full bg-white grid place-items-center">
+                                                    <img src="/public/img/gemini.svg" alt="">
+                                                </div>
+                                                <p class="text-[14px] font-semibold text-[#202732]">Gemini</p>
+                                            </div>
+
+                                            
+
+                                            <div class="flex gap-[24px]">
+                                                {{range .AimoduleArr}}
+                                                <label
+                                                    class="flex items-center gap-[10px] relative cursor-pointer opacity-50">
+                                                    <input type="checkbox" disabled class="peer hidden">
+                                                    <img src="/public/img/unchecked-rounded.svg">
+                                                    <span class="text-[13px] text-[#202732] ">{{.}}</span>
+                                                </label>
+                                                {{end}}
+
+                                                <!-- <label
+                                                    class="flex items-center gap-[10px] relative cursor-pointer opacity-40">
+                                                    <input type="checkbox" disabled class="peer hidden">
+                                                    <img src="/public/img/unchecked-rounded.svg">
+                                                    <span class="text-[13px] text-[#202732]">GPT-3.5</span>
+                                                </label>
+
+                                                <label
+                                                    class="flex items-center gap-[10px] relative cursor-pointer opacity-40">
+                                                    <input type="checkbox" disabled class="peer hidden">
+                                                    <img src="/public/img/unchecked-rounded.svg">
+                                                    <span class="text-[13px] text-[#202732]">GPT-3.5</span>
+                                                </label> -->
+                                            </div>
+
+                                            <div class="flex justify-end">
+                                                <input type="checkbox" id="status2" class="hidden peer">
+                                                <label for="status2" class="w-[36px] h-[20px] rounded-[1000px] flex items-center bg-[#D3D3D3] relative cursor-pointer peer-checked:bg-[#4CAF50] peer-checked:[&amp;&gt;span]:translate-x-[16px]
+">
+                                                    <span
+                                                        class="block w-[16px] h-[16px] transition-all duration-200 rounded-full bg-white absolute left-[2px]"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        {{end}}
+
+                                        {{end}}
+
+                                      
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            {{else}}
+                            
+                            <div class="h-full w-full max-w-[400px] mt-7 text-center mx-auto flex justify-center items-center flex-col"
+                                >
+                            
+                                <img src="/public/img/AI.svg" alt="">
+                                <h3 class="py-[30px_12px] text-[20px] font-semibold text-[#202124]">No models found.</h3>
+                                <p class="text-base font-normal text-[#4F607D] mb-[20px]"> Please create a model in AI Models
+                                    Setting.</p>
+                                <!-- <a href="/settings/aisettings/"
+                                    class="dark-btn h-[33px] !px-[16px] !w-[210px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] "
+                                    style="background: rgb(32, 39, 50);">
+                                    <img src="/public/img/plus-white.svg" alt=""> Add Models</a> -->
+                            
+                            </div>
+                            {{end}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ {{template "footer" .}}   
+
+ <script src="/public/js/agents/model_list.js"></script>

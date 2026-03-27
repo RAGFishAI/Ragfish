@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" style="--el-top-layer-scrollbar-offset: -15px;">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.title}}</title>
+<link rel="stylesheet" href="/public/css/output.css">
+<link rel="stylesheet" href="https://use.typekit.net/nlp4vzk.css">
+</head>
+
+<body class="font-inter parent">
+
+
+    <main class="grid lg:grid-cols-[auto_1fr] overflow-hidden">
+        <aside
+            class="bg-[#FAF9F5] lg:opacity-100 lg:!w-[60px] lg:!min-w-[60px] border-none lg:border-[0_1px_0_0] lg:border-solid md:!border-[#D8D7D3] lg:[&.open]:!min-w-[240px] lg:[&.open]:!w-[240px] lg:[&.open_.sidebar-link>span]:!opacity-100 lg:!transform-none lg:visible lg:[&.open_.hidden sidebar-heading]:!opacity-100 lg:[&.open_.hidden sidebar-heading]:!visibility-visible md:[&.open_.hidden sidebar-heading]:!h-auto transition-all duration-[350ms] ease-in-out lg:sticky top-[0px] h-[100vh] lg:[&.open_.sidebar-link]:w-full max-lg:[&_.hidden sidebar-heading]:!visibility-visible max-lg:[&_.sidebar-link>span]:!opacity-100 max-lg:[&_.sidebar-link>span]:!visible  max-lg:[&_.sidebar-link]:w-full max-lg:!min-w-[240px] max-lg:-translate-x-full max-lg:[&.open]:translate-x-0 max-lg:fixed max-lg:shadow-xl lg:h-screen [scrollbar-width:none] overflow-auto z-50 [&.open_.history]:visible [&.open_.history]:opacity-100  [&_.history]:invisible [&_.history]:opacity-0 max-md:[&.open~.bck-drp]:visible max-md:[&.open~.bck-drp]:opacity-100 flex flex-col"
+            id="aitools-aside">
+
+            <div class="p-[20px_20px_10px_20px] flex justify-end items-center">
+                <a id="menu-btn"
+                    class="menu-btn cursor-pointer min-w-[20px] block min-h-[20px] rounded hover:bg-[#D7D6D2]/50 transition-all duration-150 grid place-items-center p-[3px] "><img
+                        src="/website/public/img/hamburger-menu.svg" alt="" class="w-[14px]"></a>
+            </div>
+ 
+            <div
+                class="sidebar-scroll overflow-auto flex-grow [scrollbar-width:none] [&::-webkit-scrollbar]:hidden p-[10px] grow">
+
+                <div class="sidebar-list-container mb-[20px]">
+                    <ul>
+                        <li class="last-of-type:mb-0 ">
+                            <button id="NewsessionBtn"
+                                class="sidebar-link active flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <img src="/website/public/img/new-chat.svg" alt="New chat" class="w-[20px] min-w-[20px] block">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">New
+                                    chat</span>
+                            </button>
+                        </li>
+                        <!-- <li class="last-of-type:mb-0 ">
+                            <a href=""
+                                class="sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <img src="/website/public/img/history.svg" alt="Chat history" class="w-[20px] min-w-[20px] block">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">Chat
+                                    history</span>
+                            </a>
+                        </li> -->
+
+                    </ul>
+                </div>
+
+                <div class="sidebar-list-container mb-[20px] history transition-all duration-[350ms] ease-in-out">
+                    <h3
+                        class="text-[12px] leading-[15px] font-normal text-[#3C485E] whitespace-nowrap mb-[8px] transition-all duration-[350ms] ease-in-out">
+                        Chat
+                        history</h3>
+
+                    <ul>
+                        {{range .ChatHistory}}
+                        <li class="last-of-type:mb-0 ">
+                            <button 
+                                class=" chathistorybtn sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <span session-id="{{.SessionID}}" 
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">{{.Title}}</span>
+                        </button>
+                        </li>
+                        {{end}}
+                        <!-- <li class="last-of-type:mb-0 ">
+                            <a href=""
+                                class="sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">Schedule</span>
+                            </a>
+                        </li>
+                        <li class="last-of-type:mb-0 ">
+                            <a href=""
+                                class="sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">Marketing</span>
+                            </a>
+                        </li>
+
+                        <li class="last-of-type:mb-0 ">
+                            <a href=""
+                                class="sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">Quote
+                                    schedule</span>
+                            </a>
+                        </li>
+
+                        <li class="last-of-type:mb-0 ">
+                            <a href=""
+                                class="sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">Podcast
+                                    discussion</span>
+                            </a>
+                        </li>
+
+                        <li class="last-of-type:mb-0 ">
+                            <a href=""
+                                class="sidebar-link flex items-center gap-[10px] p-[6px_10px] rounded-[8px] relative overflow-hidden transition-all duration-[350ms] ease-in-out before:content-[''] before:absolute before:left-0 before:inline-block before:w-full before:h-[18px] before:rounded-[8px] before:-z-[1] before:bg-transparent before:transition-all before:duration-[350ms] before:ease-in-out  hover:before:bg-[#F0EFE6] [&.active]:before:bg-[#F0EFE6] [&.active]:!font-medium [&.active]:!text-[#28303E] [&.active]:before:max-w-full [&.active]:before:h-full  before:self-center hover:before:h-full hover:before:max-w-full h-[40px] w-[40px] group ">
+                                <span
+                                    class="text-[#3C485E] text-[13px] leading-[20px] whitespace-nowrap font-normal group-hover:font-medium group-hover:text-[#28303E] transition-opacity duration-[350ms] ">Messaging</span>
+                            </a>
+                        </li>  -->
+
+                    </ul>
+                </div>
+            </div>
+            {{if .firstname}}
+            
+
+            <el-dropdown class="block">
+                <button  id="signin_button"
+                    class="flex cursor-pointer items-center gap-[13px] nowrap p-[14px] border-t border-solid border-[#D8D7D3] w-full">
+                    <div
+                        class="Name_string min-w-[32px] w-[32px] h-[32px] rounded-full grid place-items-center bg-[#C6613F] grid place-items-center text-base leading-[19px] font-medium text-[#FFFFFF]">{{if .firstLetter}}{{.firstLetter}}{{else}}<img src="/website/public/img/Default Profile.svg">{{end}}
+                        
+                    </div>
+                    <p class="text-base leading-[30px] font-normal text-[#141413] whitespace-nowrap" id="sign_button">{{if .firstname}}{{.firstname}}{{else}}Sign in{{end}}</p>
+                </button>
+                <el-menu anchor="bottom end" popover  
+                    class="origin-bottom-left left-0px! max-w-[160px]! rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                    <div class="py-1 inline-block w-fit">
+                        <!-- <a href="/chatlogout"> -->
+                            <button type="button" id="logoutbutton"
+                                class="inline-block w-fit cursor-pointer min-w-[24px] px-4 py-2 text-left text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Sign
+                                out</button>
+                        <!-- </a> -->
+                    </div>
+                </el-menu>
+            </el-dropdown>
+            {{else}}
+
+            <div>
+                <el-dropdown class="block">
+                    <button id="signin_button"
+                        class="flex cursor-pointer items-center gap-[13px] nowrap p-[14px] border-t border-solid border-[#D8D7D3] w-full">
+                        <div
+                            class="Name_string min-w-[32px] w-[32px] h-[32px] rounded-full grid place-items-center bg-[#C6613F] grid place-items-center text-base leading-[19px] font-medium text-[#FFFFFF]">
+                           <img src="/website/public/img/Default Profile.svg">
+                
+                        </div>
+                        <p class="text-base leading-[30px] font-normal text-[#141413] whitespace-nowrap" id="sign_button">Sign in</p>
+                    </button>
+               
+                </el-dropdown>
+
+            </div>
+            {{end}}
+        </aside>
+        <section class="flex flex-col h-screen relative bg-[#FAF9F5] initialcontainer">
+       
+            <input type="hidden" name="assistantid" id="assistantid" value="{{.Assistantid}}" >
+            <input type="hidden" name="sessionId" id="sessionId" > 
+
+
+            <header class="flex items-center gap-[16px] justify-between p-[20px_16px]  lg:hidden">
+                <div>
+                    <a class="menu-btn cursor-pointer min-w-[24px] transition-all duration-150 "><img
+                            src="/website/public/img/hamburger-menu.svg" alt=""></a>
+                </div>
+
+                <div>
+                    <div class="w-[32px] h-[32px] rounded-full bg-[#C6613F] grid place-items-center">
+                        <p class="text-base leading-[19px] font-medium text-[#FFFFFF]">S</p>
+                    </div>
+                </div>
+            </header>
+
+
+
+
+            <div
+                class="grow w-full lg:w-[80%] max-w-[684px] mx-auto flex flex-col items-start lg:place-items-center p-[8px] md:p-[40px_16px]">
+                <div class="md:m-auto w-full flex flex-col max-md:grow">
+                    <h1
+                        class="heading_val max-md:mt-auto text-[30px] lg:text-[40px] leading-[40px] lg:leading-[52px] font-normal text-[#3D3D3A] text-center font-lusitana transform-element m-auto md:mb-[40px]">
+                       {{if .firstname}}Welcome, {{.firstname}}!{{else}} How Can I Help You!{{end}}</h1>
+                    <div
+                        class=" border border-solid border-[#D7D6D2] rounded-[24px] p-[20px] flex flex-row justify-between gap-[20px] bg-white max-md:mb-[8px]">
+                        <textarea name="" id="" 
+                            class="chatinput1 min-h-[43px] max-h-[500px] overflow-y-auto w-[-webkit-fill-available] border-none text-base leading-normal font-normal placeholder:text-[#73726B]  outline-none"
+                            placeholder="How can i help you today?"></textarea>
+                        <div class="flex items-center gap-[16px] justify-between">
+                            <!-- <button
+                                class="w-[32px] h-[32px] rounded-full grid place-items-center cursor-pointer hover:bg-[#D7D6D2]/50">
+                                <img src="/website/public/img/add.svg" alt="">
+                            </button> -->
+                            <!-- <button type="button"></button> -->
+                            <button class="w-[32px] h-[32px] cursor-pointer chatbutton1">
+                                <img src="/website/public/img/send.svg" alt="">
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <p class="text-[11px] md:text-base leading-[19px] font-normal text-[#73726B] w-full text-center">Powered
+                    by <span class="font-semibold">RagFish</span></p>
+            </div>
+
+
+
+        </section>
+        <section class="flex flex-col h-screen hidden relative bg-[#FAF9F5] chatcontainer overflow-y-auto">
+        
+            <header class="flex items-center gap-[16px] justify-between p-[20px_16px]  lg:hidden">
+                <div>
+                    <a class="menu-btn cursor-pointer min-w-[24px] transition-all duration-150 "><img
+                            src="/website/public/img/hamburger-menu.svg" alt=""></a>
+                </div>
+        
+                <div>
+                    <div class="w-[32px] h-[32px] rounded-full bg-[#C6613F] grid place-items-center">
+                        <p class="text-base leading-[19px] font-medium text-[#FFFFFF]">S</p>
+                    </div>
+                </div>
+            </header>
+        
+        
+        
+        
+            <div class="grow flex flex-col h-[calc(100vh-72px)] md:h-screen">
+                
+                <div id="chatScroll" class="w-full mx-auto p-[16px] grow overflow-auto [scrollbar-width:thin] ">
+                    <div class="max-w-[725px] w-full  mx-auto  " id="chatcontainer">
+                        <div class="w-fit max-w-full me-auto mb-[30px] last:mb-0 flex items-start gap-[6px]" >
+                            <div class="min-w-[30px] mt-[4px]">
+                                <img src="/website/public/img/chat-logo.svg" alt="">
+                            </div>
+                            <div>
+
+                               
+                            </div>
+                        </div>
+        
+                        <!-- <div class="ms-auto w-fit max-w-[50%] bg-[#F0EFE6] rounded-[8px] p-[12px_16px] mb-[30px] last:mb-0">
+                            <p class="text-base leading-[19px] font-normal text-[#141413] " id="chat_question">
+                            </p>
+                        </div>
+         -->
+                        <!-- <div class="w-fit max-w-full me-auto mb-[30px] last:mb-0 flex items-start gap-[6px]">
+                            <div class="min-w-[30px] mt-[4px]">
+                                <img src="/website/public/img/chat-logo.svg" alt="">
+                            </div>
+                            <div id="chat_responce">
+                                <ul class="mb-[16px] ps-[24px]">
+                                   
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+        
+                <div class=" sticky bottom-0 bg-[#FAF9F5] p-[0_8px_8px] md:p-[0px_16px_20px_16px] ]">
+                    <div
+                        class=" border border-solid border-[#D7D6D2] rounded-[24px] p-[20px] flex flex-row justify-between gap-[20px] bg-white max-md:mb-[8px] w-full max-w-[760px] mx-auto mb-[8px] ">
+                        <textarea name="" id="" 
+                            class="chatinput2 min-h-[43px] max-h-[500px] overflow-y-auto w-[-webkit-fill-available] border-none text-base leading-normal font-normal placeholder:text-[#73726B]  outline-none"
+                            placeholder="Ask Anything..."></textarea>
+                        <div class="flex items-center gap-[16px] justify-between">
+                            <!-- <button
+                                class="w-[32px] h-[32px] rounded-full grid place-items-center cursor-pointer hover:bg-[#D7D6D2]/50">
+                                <img src="/website/public/img/add.svg" alt="">
+                            </button> -->
+                            <button class="w-[32px] h-[32px] cursor-pointer chatbutton2 ">
+                                <img src="/website/public/img/send.svg" alt="" >
+                            </button>
+                        </div>    
+                    </div>
+                    <p class="text-[11px] md:text-base leading-[19px] font-normal text-[#73726B] w-full text-center">
+                        Powered by <span class="font-semibold">RagFish</span></p>
+                </div>
+            </div>
+        
+        
+        
+        </section>
+        <span
+            class="bck-drp w-screen h-screen fixed top-0 left-0 bg-[#B0AC9A42] backdrop-blur-[10px] invisible opacity-0"></span>
+    </main>
+
+    <el-dialog >
+        <dialog id="loginModal" aria-labelledby="dialog-title"
+            class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent"
+            style="right: var(--el-top-layer-scrollbar-offset, 0px);">
+            <el-dialog-backdrop
+                class="fixed inset-0 bg-white md:bg-[#FFFFFF42] transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in backdrop-blur-[10px]"
+                inert=""></el-dialog-backdrop>
+
+            <div tabindex="0"
+                class="flex min-h-full items-end justify-center p-[20px] text-center focus:outline-none sm:items-center sm:p-0">
+                <el-dialog-panel
+                    class="relative transform overflow-hidden rounded-[24px] bg-white text-left md:shadow-[0px_4px_50px_0px_#0000000F] transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 w-full sm:max-w-[436px] data-closed:sm:translate-y-0 data-closed:sm:scale-95 m-auto">
+                    <div class="md:p-[60px_40px_40px] w-full max-w-[516px]">
+                        <a href="" class="mb-[36px] inline-block"><img src="/website/public/img/logo.svg" alt=""></a>
+                        <h3 class="text-[22px] leading-[26px] font-semibold text-[#202732] mb-[8px]">Sign In</h3>
+                        <p class="text-[14px] leading-[17px] font-normal text-[#4F607D] mb-[30px]">Enter your credentials to
+                            access
+                            your account</p>
+
+                        
+
+                        <div>
+                            <form method="post" action="/login_verification" id="chatloginform">
+                                <input name="csrf" value="{{.csrf}}" type="hidden">
+                                <input value="{{.TenantID}}" name="TenantID" id="TenantID" type="hidden">
+                            <div class="mb-[16px]">
+                                <label for="emailInput" 
+                                    class="text-[14px] leading-[22px] font-semibold text-[#28303E] mb-[4px] block">Email
+                                    address</label>
+                                <input  placeholder="Your email address"   name="emailid" id="emailInput"  
+                                    class="border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[42px] block w-full outline-none focus:border-[#704C9B] text-[14px] leading-[24px] font-normal">
+                            </div>
+                            <p id="email_error" style="display:none; color:red;" class="text-[14px]"> </p>
+
+                            <div class="mb-[20px]">
+                                <label for="passwordInput" 
+                                    class="text-[14px] leading-[24px] font-semibold text-[#28303E] mb-[4px] block">Password</label>
+                                <div class="relative flex items-center w-full">
+                                    <input type="password" placeholder="Your password"  name="password"  id="passwordInput" 
+                                        class="border border-solid border-[#E0E4EB] rounded-[8px] p-[9px_14px] h-[42px] block w-full outline-none focus:border-[#704C9B] text-[14px] leading-[24px] font-normal">
+                                    <button type="button"
+                                        class="password_show rounded-full absolute transition-all duration-300 right-[5px] w-[30px] h-[30px] p-[5px] flex items-center hover:bg-[#4F607D]/10"><img
+                                            src="/website/public/img/hide-password.svg" alt=""></button>
+                                </div>
+                            </div>
+
+                            <p id="pass_error" style="display:none; color:red;" class="text-[14px]"> </p>
+                            <button id="form_submit_button" type="button"
+                                class="dark-btn !bg-[#704C9B] cursor-pointer h-[42px] w-full text-[14px] placeholder:text-[#4F607D] leading-[24px] font-semibold text-[#FFFFFF] text-center rounded-[8px]">Sign
+                                In</button>
+                            <!-- <p class="text-[12px] leading-[20px] font-normal text-[#4F607D] text-center mt-[16px]">
+                                Already
+                                having an account? <a href="welcome-email.html"
+                                    class="font-semibold text-[#202732] relative group inline-block">Login <span
+                                        class="absolute left-0 bottom-0 w-0 h-[1px] bg-[#202732] transition-all max-lg:hidden duration-300 ease-in-out group-hover:w-full"></span></a>
+                            </p> -->
+
+                           </form>
+
+                           
+                        </div>
+
+                    </div>
+                </el-dialog-panel>
+            </div>
+        </dialog>
+    </el-dialog>
+
+    
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/website/public/js/userchat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+   
+
+</body>
+
+</html>

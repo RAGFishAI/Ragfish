@@ -1,0 +1,58 @@
+{
+  "name": "rag-app-backend",
+  "version": "1.0.0",
+  "description": "RAG system backend with multi-app support",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "rm -rf dist && tsc",
+    "start": "node dist/index.js",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:generate": "npm run typeorm -- migration:generate -d src/data-source.ts",
+    "migration:run": "npm run typeorm -- migration:run -d src/data-source.ts",
+    "migration:revert": "npm run typeorm -- migration:revert -d src/data-source.ts"
+  },
+  "keywords": [
+    "rag",
+    "llamaindex",
+    "express",
+    "multi-app"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@llamaindex/anthropic": "^0.3.26",
+    "@llamaindex/huggingface": "^0.1.31",
+    "@llamaindex/openai": "^0.4.22",
+    "@qdrant/js-client-rest": "^1.16.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.3",
+    "llamaindex": "^0.12.0",
+    "mammoth": "^1.11.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "routing-controllers": "^0.11.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "typedi": "^0.10.0",
+    "typeorm": "^0.3.27",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.10.0",
+    "@types/uuid": "^10.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  }
+}

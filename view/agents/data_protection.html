@@ -1,0 +1,760 @@
+{{template "header" .}}
+
+{{template "agentheader" .}}
+
+
+<div class="p-[16px] max-sm:p-[24px_16px] grow flex flex-col" id="styled-dashboard">
+
+    <input type="hidden" class="csrf" value="{{.csrf}}">
+    <input type="hidden" class="assistantid" value="{{.assistant.Id}}">
+    {{$channelslist := .channelslist}}
+    {{if .permissionlist}}
+    {{range .permissionlist}}
+
+    {{$permissionId :=.Id}}
+
+    <div data-accordion="collapse" data-id="{{.UserGroupData.Id}}" data-grbid="{{.Id}}"
+        class="channeldiv grbpermission  mb-[8px] p-[16px] lg:p-[20px]
+         border  border-[#E2E2E2] rounded-[12px]  "
+          aria-expanded="false"  data-accordion-target="#parent-body-{{.Id}}">
+        <input type="hidden" class="newpermission" value="{{.Id}}">
+        <div class="flex gap-[16px] usergrp max-sm:flex-col ">
+            <div class="flex items-start gap-[10px] cursor-pointer accordion-header" data-accordion-target="#parent-body-{{.Id}}"
+                aria-expanded="false" aria-controls="parent-body-{{.Id}}">
+                <button class="mt-[5px] cursor-pointer min-w-[12px]">
+                    <img src="/public/img/accord-arrow.svg" class="arrow transition-transform duration-300"      alt="">
+                </button>
+
+                <div class="grow">
+                    <h3 class="font-semibold ">{{.UserGroupData.Name}}</h3>
+                    <p class="text-[12px] text-[#4F607D]  mt-[4px]">{{.UserGroupData.Description}}</p>
+                </div>
+            </div>
+            <div class="ms-auto flex items-center gap-[10px]">
+                <button command="show-modal" commandfor="delete-modal" id="" data-id="{{.Id}}"
+                    class="perdelete-btn w-[107px] cursor-pointer border border-solid border-[#EEEEEE] bg-[#F4F4F4] hover:border-[#704c9b] h-[33px] !px-[14px] flex items-center gap-[4px] rounded text-sm leading-[17px] font-medium text-[#28303E] max-w-max ms-auto">
+                    <img src="/public/img/remove.svg" alt=""> Remove</button>
+                <!-- <button data-grbid="{{.UserGroupData.Id}}" data-permissionid="{{.Id}}"
+                                        class="permissionsavebtn opacity-[50%] dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] max-w-max ms-auto">
+                                        <img src="/public/img/save.svg" alt=""> Save</button> -->
+            </div>
+        </div>
+
+        <!-- Parent body -->
+        <div id="parent-body-{{.Id}}" class="hidden sm:px-[16px_0]">
+
+            <!-- NESTED ACCORDION 1 (new scope) -->
+            <div data-accordion="collapse" class="mt-[14px] selectchennalName">
+
+                <div class="flex items-start gap-[10px] cursor-pointer accordion-header" data-accordion-target="#child-body-{{.Id}}"
+                    aria-expanded="true" aria-controls="child-body-{{.Id}}">
+                    <button class="mt-[5px] cursor-pointer min-w-[12px]">
+                        <img src="/public/img/downarrow.svg " class="arrow transition-transform duration-300" alt="">
+                    </button>
+
+                    <div class="grow">
+                        <h3 class=" font-semibold text-sm leading-[17px] font-semibold text-[#202732]">
+                            Select Channels</h3>
+                        <p class="text-[12px] text-[#4F607D]  mt-[4px] ">Pick the channels you want to use.
+                            Their folders and files will be included for processing and access.</p>
+                    </div>
+                </div>
+
+                <div id="child-body-{{.Id}}" class="hidden acoordionsecond sm:px-[16px_0]">
+                    <div class="pt-[0px]">
+
+                        <div class="w-full max-w-[663px] relative mt-[14px]">
+                            <div class="flex items-center relative w-full">
+
+                                <img src="/public/img/accordion-arrow-down.svg" alt="search"
+                                    class="absolute managechn cursor-pointer right-[12px]">
+                                <input type="text" placeholder="Search and Add Channels"
+                                    class="managechn  bg-[#FAF6FE] p-[16px] border border-solid border-[#C1C9D7] flex w-full h-[36px] rounded-[4px] outline-none focus:border-[#704C9B] h-[36px] pe-[42px] text-sm leading-[17px] font-normal placeholder:text-[#3C485E]">
+
+
+                            </div>
+                            <div data-permissionid="{{.Id}}"
+                                class="allchanneldiv z-50 shadow-[0px_2px_8px_0px_#0000001A] border border-solid border-[#E0E4EB] absolute top-full left-0 bg-white w-full max-h-[300px] overflow-auto [scrollbar-width:thin] mt-[12px] rounded-[8px] hidden">
+                                {{range $channelslist}}
+                                <label
+                                    class="p-[12px_10px] flex items-center justify-between gap-[16px] hover:bg-[#FAFAFA] border-b border-solid border-[#E0E4EB] last-of-type:border-b-0 cursor-pointer">
+                                    <!-- Left Section -->
+
+                                    <div class="flex items-center gap-[10px] grow">
+                                        <input type="checkbox" id="{{.Id}}" data-name="{{.ChannelName}}"
+                                            data-desc="{{.ChannelDescription}}"
+                                            class="channelcheckbox w-[13px] h-[13px] accent-[#704C9B]">
+
+                                        <p class="text-[13px] leading-[17px] font-normal text-[#28303E]">
+                                            {{.ChannelName}}
+                                        </p>
+                                    </div>
+                                    <!-- Right Section -->
+                                    {{if gt .FolderCount 0}}
+                                    <span
+                                        class="text-[11px] leading-[17px] font-normal text-[#4F607D] whitespace-nowrap">
+                                        {{.FolderCount}} Folders {{.FileCount}} Files
+                                    </span>
+                                    {{end}}
+                                </label>
+                                {{end}}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-[10px] mt-[12px] firstchanneldiv">
+                            {{range .ChannelData}}
+                            <div data-id="{{.Id}}"
+                                class="usrgrbdata h-[144px] flex justify-start items-start flex-col sm:flex-row gap-[10px] border border-[#E2E2E2] bg-[#F9F9F9] p-[20px] rounded-[12px]">
+                                <div class="flex flex-col gap-1.5">
+                                    <div>
+                                        <h3 class="text-[18px] font-bold text-[#28303E] mb-[4px]">{{.ChannelName}}</h3>
+                                        <p class="text-[12px] font-400 text-[#4F607D] line-clamp-2 ">{{.ChannelDescription}}</p>
+                                    </div>
+                                    <div class="flex">
+                                        <p class="text-[14px] font-500 text-[#28303E] pt-[10px] italic">{{.FileCount}} Files
+                                            Selected</p><button data-id="{{.Id}}"
+                                            data-assusergrbchId="{{.AssistantUserGrpChannelId}}"
+                                            data-name="{{.ChannelName}}" command="show-modal"
+                                            commandfor="create-manage-content"
+                                            class="datapermission hidden cursor-pointer text-[14px] font-medium text-[#704C9B] p-[10px] pt-[10px]">Edit</button>
+                                    </div>
+
+                                </div>
+
+                                <div class="ms-auto flex justify-end items-center gap-[8px] shrink-0">
+                                    <button command="show-modal" commandfor="delete-modal"
+                                        data-id="{{.AssistantUserGrpChannelId}}"
+                                        class="channelperdelete cursor-pointer w-[36px] h-[32px] rounded-[8px] shadow-[0px_1px_2px_0px_#0000001F] border border-[#EEEEEE] flex items-center justify-center bg-white hover:bg-[#F8ECFE]">
+                                        <img src="/public/img/remove.svg" alt=""> </button>
+                                    <button data-id="{{.Id}}" data-assusergrbchId="{{.AssistantUserGrpChannelId}}"
+                                        data-name="{{.ChannelName}}" command="show-modal"
+                                        commandfor="create-manage-content"
+                                        class="datapermission cursor-pointer px-[14px] h-[32px] text-[14px] font-medium text-[#28303E] rounded-[8px] shadow-[0px_1px_2px_0px_#0000001F] border border-[#EEEEEE] flex items-center justify-center gap-[4px] bg-white hover:bg-[#F8ECFE]">
+                                        <img src="/public/img/Manage Document.svg" alt=""> Manage Documents </button>
+                                </div>
+                            </div>
+
+                            {{end}}
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+    {{end}}
+    {{else}}
+    <div data-accordion="collapse"
+        class="selectuserdiv mb-[8px] p-[16px] lg:p-[20px] border border-[#E2E2E2] rounded-[12px]">
+
+        <div class="flex gap-[16px] max-sm:flex-col ">
+            <div class="flex items-start gap-[10px] cursor-pointer">
+                <button class="mt-[5px] cursor-pointer min-w-[12px]">
+                    <img src="/public/img/accord-arrow.svg" alt="">
+                </button>
+
+                <div class="grow">
+                    <h3 class="text-base leading-[24px] font-semibold text-[#28303E] italic mb-[4px]">
+                        (No Users Group)</h3>
+                    <p class="text-[12px] leading-[17px] font-normal text-[#4F607D]">First select user group to map data
+                        to that particular user group</p>
+                </div>
+            </div>
+            <button type="button"
+                class="selectusergrb dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] max-w-max ms-auto">
+                <img src="/public/img/add-channels.svg" alt=""> Add User Group</button>
+        </div>
+    </div>
+    {{end}}
+    <div data-accordion="collapse"
+        class="usergrblist mb-[8px] p-[16px] lg:p-[20px] border border-[#E2E2E2] rounded-[12px] hidden">
+
+        <div class="flex gap-[16px] max-sm:flex-col ">
+            <div class="flex items-start gap-[10px] cursor-pointer w-full">
+                <button class="mt-[5px] cursor-pointer min-w-[12px]">
+                    <img src="/public/img/accord-arrow.svg" alt="">
+                </button>
+
+                <div class="grow">
+                    <h3 class="text-base leading-[24px] font-semibold text-[#28303E] italic mb-[4px]">
+                        (No User Group)</h3>
+                    <p class="text-[12px] leading-[17px] font-normal text-[#4F607D]">First select user group to map data
+                        to that particular user group</p>
+
+                    <div class="w-full max-w-[663px] relative mt-[14px]">
+                        <div class="flex items-center relative w-full">
+                            <img src="/public/img/accordion-arrow-down.svg" alt="search"
+                                class="absolute manageusergrb cursor-pointer right-[12px]">
+                            <input type="text" placeholder="Search and Add User Group"
+                                class="manageusergrb bg-[#FAF6FE] p-[16px]  border border-solid border-[#C1C9D7] flex w-full h-[36px] rounded-[4px] outline-none focus:border-[#704C9B] h-[36px] pe-[42px] text-sm leading-[17px] font-normal placeholder:text-[#3C485E]">
+                        </div>
+                        <div
+                            class="allusergrbdiv z-50 shadow-[0px_2px_8px_0px_#0000001A] border border-solid border-[#E0E4EB] absolute top-full left-0 bg-white w-full max-h-[300px] overflow-auto [scrollbar-width:thin] mt-[12px] rounded-[8px] hidden">
+                            {{range .usergrouplist}}
+                            <a href="javascript:void(0)" data-id="{{.Id}}" data-desc="{{.Description}}"
+                                data-name="{{.Name}}"
+                                class="chooseusergrb p-[12px_10px] flex items-center justify-between gap-[16px] hover:bg-[#FAFAFA] border-b border-solid border-[#E0E4EB] last-of-type:border-b-0">
+                                <p class="cursor-pointer text-[13px] leading-[17px] font-normal text-[#28303E] grow">
+                                    {{.Name}} </p>
+                            </a>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href=""
+                class="border border-solid border-[#EEEEEE] bg-[#F4F4F4] hover:border-[#704c9b] h-[33px] !px-[16px] flex items-center gap-[4px] rounded text-sm leading-[17px] font-medium text-[#28303E] max-w-max ms-auto">
+                <img src="/public/img/remove.svg" alt=""> Remove</a>
+        </div>
+    </div>
+
+    <div data-accordion="collapse"
+        class="channeldiv grbpermission mb-[8px] p-[16px] lg:p-[20px] border border-[#E2E2E2] rounded-[12px] hidden">
+        <input type="hidden" class="newpermission" value="">
+        <div class="flex gap-[16px] max-sm:flex-col ">
+            <div class="flex items-start gap-[10px] cursor-pointer" data-accordion-target="#parent-body"
+                aria-expanded="true" aria-controls="parent-body">
+                <button class="mt-[5px] cursor-pointer min-w-[12px]">
+                    <img src="/public/img/accord-arrow.svg" alt="">
+                </button>
+
+                <div class="grow">
+                    <h3 class="font-semibold groupname"></h3>
+                    <p class="text-[12px] text-[#4F607D]  mt-[4px] groupdesc"></p>
+                </div>
+            </div>
+            <div class="ms-auto flex items-center gap-[10px]">
+                <button command="show-modal" commandfor="delete-modal" id="" data-id="{{.Id}}"
+                    class="cursor-pointer w-[107px] perdelete-btn newperremove border border-solid border-[#EEEEEE] bg-[#F4F4F4] hover:border-[#704c9b] h-[33px] !px-[16px] flex items-center gap-[4px] rounded text-sm leading-[17px] font-medium text-[#28303E] max-w-max ms-auto">
+                    <img src="/public/img/remove.svg" alt=""> Remove</button>
+                <!-- <button data-grbid=""
+                                        class="permissionsavebtn opacity-[50%] dark-btn h-[33px] !px-[16px] flex gap-[4px] rounded text-sm leading-[17px] font-medium text-[#FFFFFF] max-w-max ms-auto">
+                                        <img src="/public/img/save.svg" alt=""> Save</button> -->
+            </div>
+        </div>
+
+        <!-- Parent body -->
+        <div id="parent-body" class="hidden sm:px-[16px_0]">
+
+            <!-- NESTED ACCORDION 1 (new scope) -->
+            <div data-accordion="collapse" class="mt-[14px]">
+
+                <div class="flex items-start gap-[10px] cursor-pointer" data-accordion-target="#child-body"
+                    aria-expanded="true" aria-controls="child-body">
+                    <button class="mt-[5px] cursor-pointer min-w-[12px]">
+                        <img src="/public/img/accord-arrow.svg" alt="">
+                    </button>
+
+                    <div class="grow">
+                        <h3 class=" font-semibold text-sm leading-[17px] font-semibold text-[#202732]">
+                            Select Channels</h3>
+                        <p class="text-[12px] text-[#4F607D]  mt-[4px]">Pick the channels you want to use.
+                            Their folders and files will be included for processing and access.</p>
+                    </div>
+                </div>
+
+                <div id="child-body" class="hidden sm:px-[16px_0]">
+                    <div class="pt-[0px]">
+
+                        <div class="w-full max-w-[663px] relative mt-[14px]">
+                            <div class="flex items-center relative w-full">
+
+                                <img src="/public/img/accordion-arrow-down.svg" alt="search"
+                                    class="absolute managechn cursor-pointer right-[12px]">
+                                <input type="text" placeholder="Search and Add Channels"
+                                    class="managechn  bg-[#FAF6FE] p-[16px] border border-solid border-[#C1C9D7] flex w-full h-[36px] rounded-[4px] outline-none focus:border-[#704C9B] h-[36px] pe-[42px] text-sm leading-[17px] font-normal placeholder:text-[#3C485E]">
+
+
+                            </div>
+                            <div
+                                class="allchanneldiv z-50 shadow-[0px_2px_8px_0px_#0000001A] border border-solid border-[#E0E4EB] absolute top-full left-0 bg-white w-full max-h-[300px] overflow-auto [scrollbar-width:thin] mt-[12px] rounded-[8px] hidden">
+                                {{range .channelslist}}
+                                <label
+                                    class="p-[12px_10px] flex items-center justify-between gap-[16px] hover:bg-[#FAFAFA] border-b border-solid border-[#E0E4EB] last-of-type:border-b-0 cursor-pointer">
+                                    <!-- Left Section -->
+
+                                    <div class="flex items-center gap-[10px] grow">
+                                        <input type="checkbox" id="{{.Id}}" data-name="{{.ChannelName}}"
+                                            data-desc="{{.ChannelDescription}}"
+                                            class="channelcheckbox w-[13px] h-[13px] accent-[#704C9B]">
+
+                                        <p class="text-[13px] leading-[17px] font-normal text-[#28303E]">
+                                            {{.ChannelName}}
+                                        </p>
+                                    </div>
+                                    <!-- Right Section -->
+                                    {{if gt .FolderCount 0}}
+                                    <span
+                                        class="text-[11px] leading-[17px] font-normal text-[#4F607D] whitespace-nowrap">
+                                        {{.FolderCount}} Folders {{.FileCount}} Files
+                                    </span>
+                                    {{end}}
+                                </label>
+                                {{end}}
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-[10px] mt-[12px] firstchanneldiv">
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    {{if .permissionlist}}
+    <div class="flex justify-end addmoregrbf">
+        <button
+            class="selectusergrb cursor-pointer text-sm leading-[17px] font-semibold text-[#704C9B] flex items-center border border-solid border-[#704C9B] rounded-[50px] p-[10px_14px] gap-[9px] w-fit hover:bg-[#F8ECFE] mt-[14px]">
+            <img src="/public/img/add-dark.svg" alt="">
+            Add User Group
+        </button>
+    </div>
+
+    {{end}}
+    <div class="flex justify-end hidden addmoregrb">
+        <button
+            class="selectusergrb cursor-pointer text-sm leading-[17px] font-semibold text-[#704C9B] flex items-center border border-solid border-[#704C9B] rounded-[50px] p-[10px_14px] gap-[9px] w-fit hover:bg-[#F8ECFE] mt-[14px]">
+            <img src="/public/img/add-dark.svg" alt="">
+            Add User Group
+        </button>
+    </div>
+
+
+
+</div>
+</div>
+</div>
+</section>
+
+<!-- Create Channel modal -->
+<!-- <el-dialog>
+    <dialog id="create-manage-content" aria-labelledby="create-manage-content-title"
+        class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent  ">
+
+        <el-dialog-backdrop
+            class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in">
+        </el-dialog-backdrop>
+
+        <div tabindex="0"
+            class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center">
+
+            <el-dialog-panel class="relative flex flex-col overflow-hidden rounded-[24px] bg-white text-left shadow-xl transition-all  
+               data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out 
+               data-leave:duration-200 data-leave:ease-in sm:my-8 w-full sm:max-w-[1115px]  min-h-[770px] 
+               data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+
+
+                <div class="flex items-start p-[30px_30px_30px_30px] max-lg:p-[24px_16px_16px] ">
+                    <div>
+                        <h2
+                            class="text-[24px] max-lg:text-[16px] max-lg:leading-[16px] leading-[20px] font-semibold text-[#202124]">
+                            Manage Documents</h2>
+                        <p
+                            class="pt-[10px] text-[16px] font-medium leadnig-[20px] font-normal text-[#704C9B] channelnameinfo">
+                        </p>
+
+                    </div>
+                    <button command="close" commandfor="create-manage-content"
+                        class=" ms-auto ps-[10px] cursor-pointer"> <img src="/public/img/close.svg" alt=""> </button>
+                </div>
+
+                <div class="p-[0px_30px_30px] flex-1 overflow-y-auto">
+
+                    <div class="w-full flex justify-start items-center mb-[10px]">
+                        <div class="flex items-center relative w-full max-w-[296px]">
+                            <img src="/public/img/search.svg" alt="search" class="absolute left-[12px]">
+                            <input type="text" placeholder="Search Content"
+                                class="searchfiles bg-[#FAF6FE] border border-solid border-[#C1C9D7] flex w-full h-[32px] rounded-[4px] outline-none focus:border-[#704C9B] h-[36px] ps-[42px] text-sm leading-[17px] font-normal placeholder:text-[#3C485E]">
+                        </div>
+                        <label class="flex items-center justify-end gap-[16px] cursor-pointer ms-auto"> -->
+                            <!-- Left Section -->
+                            <!-- <div class="flex items-center gap-[10px] grow selectalldiv">
+                                <input type="checkbox" placeholder="Search Folder / Document"
+                                    class="Selectallbtn w-[16px] h-[16px] accent-[#704C9B]">
+                                <p class="text-[14px] leading-[20px] font-normal text-[#202732]">
+                                    Select All
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    <input type="hidden" class="assisusrgrbchidd" value="">
+                    <div class="max-h-[calc(100vh - 15rem)] overflow-y-auto filesdiv">
+
+
+
+                       
+                    </div>
+                      <div
+                            class="nodatafound h-full mt-[50px] hidden w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+                            <img src="/public/img/No data.svg" alt="">
+
+                            <p class="pt-4 text-base font-normal text-[#4F607D] ">It looks like there are no result that
+                                match your search</p>
+
+
+
+                        </div>
+                          <div
+                            class="norecordfound h-full mt-[50px] hidden w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+                            <img src="/public/img/add-folder.svg" alt="">
+
+                            <p class="pt-4 text-base font-normal text-[#4F607D] ">No folders or files are available in this channel</p>
+
+
+
+                        </div>
+                </div>
+
+                <div class="flex gap-[10px] justify-end w-full py-[20px] px-[30px] sticky bottom-0 ">
+                    <button command="close" commandfor="create-manage-content"
+                        class="bg-[#E0E4EB] h-[40px] max-w-max !px-[14px] flex items-center gap-[4px] rounded-[8px] text-base leading-[20px] font-normal text-[#28303E] cursor-pointer border border-solid border-[#E0E4EB] hover:border-[#704C9B]">
+                        Cancel</button>
+                    <button
+                        class="filessavebtn dark-btn h-[40px] max-w-max !px-[14px] flex gap-[4px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] ">
+                        Save
+                    </button>
+                </div>
+
+
+            </el-dialog-panel>
+        </div>
+    </dialog>
+</el-dialog> -->
+
+<el-dialog>
+    <dialog id="create-manage-content" aria-labelledby="create-manage-content-title"
+        class="fixed inset-0 size-auto max-h-none max-w-none overflow-hidden bg-transparent backdrop:bg-transparent">
+
+        <el-dialog-backdrop
+            class="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in">
+        </el-dialog-backdrop>
+
+        <div tabindex="0" class="absolute inset-0  focus:outline-none p-[7px_5px]">
+            <el-dialog-panel
+                class="group/dialog-panel relative ml-auto block size-full md:max-w-[75%] bg-white transform transition duration-500 ease-in-out data-closed:translate-x-full sm:duration-700 rounded-[20px] h-[calc(100vh-14px)] flex flex-col">
+
+
+
+                <div class="flex items-start p-[30px_30px_20px_30px] max-lg:p-[24px_16px_16px] ">
+                    <div>
+                        <h2
+                            class="text-[24px] max-lg:text-[16px] max-lg:leading-[16px] leading-[20px] font-semibold text-[#202124] mb-[8px]">
+                            Manage Documents</h2>
+                        <p class="text-[16px] leading-[19px] font-medium text-[#704C9B] channelnameinfo"></p>
+                    </div>
+                    <button command="close" commandfor="create-manage-content"
+                        class=" ms-auto ps-[10px] cursor-pointer "> <img src="/public/img/close.svg" alt=""
+                            class="max-sm:h-[16px] "> </button>
+                </div>
+
+                <div class="p-[16px] lg:p-[0px_30px_15px] overflow-auto grow">
+
+                    <div class="w-full flex max-sm:flex-col gap-[16px] justify-start items-center mb-[20px]">
+                        <div class="flex items-center relative w-full sm:max-w-[312px]">
+                            <img src="/public/img/search.svg" alt="search" class="absolute left-[12px]">
+                            <input type="text" placeholder="Search Folder / document"
+                                class="searchfiles bg-[#FFFFFF] border border-solid border-[#C1C9D7] flex w-full h-[32px] rounded-[4px] outline-none focus:border-[#704C9B] h-[36px] ps-[42px] text-[13px] leading-[16px] font-normal placeholder:text-[#3C485E] italic">
+                            <img src="/public/img/close.svg" class="absolute right-[12px] w-3 cursor-pointer search_close hidden">
+                        </div>
+                        <label
+                            class="flex items-center justify-between max-sm:w-full sm:justify-end gap-[20px] cursor-pointer sm:ms-auto">
+                            <!-- Left Section -->
+                            <div class="flex items-center gap-[10px] grow">
+                                <input type="checkbox" placeholder="Search Folder / Document"
+                                    class="Selectallbtn w-[16px] h-[16px] accent-[#704C9B]">
+                                <p class="text-[14px] leading-[20px] font-normal text-[#202732]">
+                                    Select All
+                                </p>
+                            </div>
+
+                            
+
+                        </label>
+                        <el-select id="select" name="selected" value="1" class="block">
+                            <!-- Button -->
+                            <button type="button"
+                                class="flex gap-[10px] items-center justify-between border border-solid border-[#DEDEDE] bg-[#F6F5F5] w-full cursor-default  rounded-[8px] h-[30px] text-left  p-[0_10px_0_10px] focus:border-[#704C9B] focus-visible:outline-2 cursor-pointer  min-w-[137px]  ">
+                                <el-selectedcontent
+                                    class="col-start-1 row-start-1 flex items-center text-[13px] leading-[20px] font-normal text-[#202732]">
+                        
+                                </el-selectedcontent>
+                        
+                                <!-- Chevron -->
+                                <div>
+                                    <img src="/public/img/accordion-arrow-down.svg" alt="" class="w-[8px]">
+                                </div>
+                            </button>
+                        
+                            <!-- Options -->
+                            <el-options anchor="bottom end" popover
+                                class="max-h-56 w-[170px] overflow-auto rounded-md bg-white p-1 text-[13px] leading-[20px] font-normal text-[#202732] shadow-[0px_4px_10px_0px_#00000024] border border-solid border-[#DEE2E9] outline-1 outline-black/5 sm:text-sm mt-[4px]">
+                                <!-- Option -->
+                                <el-option value="1"
+                                    class="group/option relative block cursor-default py-2 pr-9 pl-3 text-[#202732] text-[13px] leading-[16px] font-normal select-none focus:bg-[#F8ECFE] focus:text-[#202732] cursor-pointer rounded">
+                                    <span
+                                        class="block truncate font-normal group-aria-selected/option:font-medium group-aria-selected/option:text-[#704C9B] ">
+                                        All files
+                                    </span>
+                                </el-option>
+                        
+                                <el-option value="2"
+                                    class="group/option relative block cursor-default py-2 pr-9 pl-3 text-[#202732] text-[13px] leading-[16px] font-normal select-none focus:bg-[#F8ECFE] focus:text-[#202732] cursor-pointer rounded">
+                                    <span
+                                        class="block truncate font-normal group-aria-selected/option:font-medium group-aria-selected/option:text-[#704C9B]">
+                                        Selected files
+                                    </span>
+                                </el-option>
+                            </el-options>
+                        </el-select>
+                    </div>
+                    <p class="selectedfilescount text-sm leading-[17px] font-normal text-[#4F607D] mb-[10px]"></p>
+                    
+                    <input type="hidden" class="assisusrgrbchidd" value="">
+                    <div class="max-h-[calc(100vh - 15rem)] overflow-y-auto filesdiv">
+
+                        <!-- <h4 class="text-sm leading-[17px] font-normal text-[#4F607D] mb-[10px]">83 files Selected
+                        </h4>
+
+                        <div class="">
+
+                            <label
+                                class="flex items-center justify-start gap-[20px] cursor-pointer ms-auto border-b border-[#F5F5F5] p-[10px]">
+                                
+
+                                <div class="flex items-center gap-[10px]">
+                                    <input type="checkbox" placeholder="Search Folder / Document"
+                                        class="w-[13px] h-[13px] accent-[#704C9B]">
+                                </div>
+                                <div class="flex items-center justify-start gap-[10px] ">
+                                    <h3
+                                        class="font-medium text-[#202732] text-[14px] flex items-center gap-[5px] line-clamp-1">
+                                        <img src="/public/img/folder.svg" alt=""> HR Policy
+                                    </h3>
+                                    <span class="text-[13px] leading-[20px] font-normal text-[#202732]">/</span>
+                                    <p
+                                        class="text-[13px] font-normal text-[#202732] flex justify-start items-center gap-1">
+                                        <img src="/public/img/file.svg" alt=""> Leave <span
+                                            class="bg-[#F2CCFE] rounded px-[2px]">Policy</span>.pdf
+                                    </p>
+                                </div>
+                            </label>
+
+                            <label
+                                class="flex items-center justify-start gap-[20px] cursor-pointer ms-auto border-b border-[#F5F5F5] p-[10px]">
+                            
+
+                                <div class="flex items-center gap-[10px]">
+                                    <input type="checkbox" placeholder="Search Folder / Document"
+                                        class="w-[13px] h-[13px] accent-[#704C9B]">
+                                </div>
+
+                                <div class="flex items-center justify-start gap-[10px] ">
+                                    <h3
+                                        class="font-medium text-[#202732] text-[14px] flex items-center gap-[5px] line-clamp-1">
+                                        <img src="/public/img/folder.svg" alt=""> HR Policy
+                                    </h3>
+                                    <span class="text-[13px] leading-[20px] font-normal text-[#202732]">/</span>
+                                    <p
+                                        class="text-[13px] font-normal text-[#202732] flex justify-start items-center gap-1">
+                                        <img src="/public/img/file.svg" alt=""> Leave policy.pdf
+                                    </p>
+                                </div>
+                            </label>
+
+                        </div>
+
+                        <div data-accordion="collapse" class="mb-[8px]">
+
+                            <div
+                                class="flex gap-[16px] p-[12px_10px] bg-[#F5F5F5] border border-[#E8E8E8] rounded-[4px]">
+                                <div class="flex items-center gap-[12px] cursor-pointer w-full group"
+                                    data-accordion-target="#parent-body-mc1" aria-expanded="false"
+                                    aria-controls="parent-body-mc1">
+                                    <label class="flex items-center justify-end gap-[16px] cursor-pointer ms-auto">
+                                       
+                                        <div class="flex items-center gap-[10px] grow">
+                                            <input type="checkbox" placeholder="Search Folder / Document"
+                                                class="w-[13px] h-[13px] accent-[#704C9B]">
+                                        </div>
+                                    </label>
+                                    <div class="grow">
+                                        <h3
+                                            class="font-medium text-[#202732] text-[14px] flex items-center gap-[5px] line-clamp-1">
+                                            <img src="/public/img/folder.svg" alt=""> HR Policy
+                                        </h3>
+                                    </div>
+                                    <p class="text-[11px] font-normal text-[#4F607D] ms-auto whitespace-nowrap">24
+                                        document</p>
+                                    <button class=" cursor-pointer min-w-[12px]">
+                                        <img src="/public/img/accord-arrow.svg" alt=""
+                                            class="transition-transform duration-300 group-aria-expanded:rotate-90">
+                                    </button>
+                                </div>
+                            </div>
+
+                            
+                            <div id="parent-body-mc1" class="hidden">
+
+                                <label
+                                    class="flex items-center justify-start gap-[20px] cursor-pointer ms-auto border-b border-[#F5F5F5] p-[10px]">
+                             
+                                    <div class="flex items-center gap-[10px]">
+                                        <input type="checkbox" placeholder="Search Folder / Document"
+                                            class="w-[13px] h-[13px] accent-[#704C9B]">
+                                    </div>
+                                    <p
+                                        class="text-[13px] font-normal text-[#202732] flex justify-start items-center gap-1">
+                                        <img src="/public/img/file.svg" alt=""> Leave policy.pdf
+                                    </p>
+                                </label>
+
+                                <label
+                                    class="flex items-center justify-start gap-[20px] cursor-pointer ms-auto border-b border-[#F5F5F5] p-[10px]">
+                                    
+                                    <div class="flex items-center gap-[10px]">
+                                        <input type="checkbox" placeholder="Search Folder / Document"
+                                            class="w-[13px] h-[13px] accent-[#704C9B]">
+                                    </div>
+                                    <p
+                                        class="text-[13px] font-normal text-[#202732] flex justify-start items-center gap-1">
+                                        <img src="/public/img/file.svg" alt=""> Dress code.pdf
+                                    </p>
+                                </label>
+
+                            </div>
+                        </div>
+                    
+
+                        <div data-accordion="collapse" class="mb-[8px]">
+
+                            <div
+                                class="flex gap-[16px] p-[12px_10px] bg-[#F5F5F5] border border-[#E8E8E8] rounded-[4px]">
+                                <div class="flex items-center gap-[12px] cursor-pointer w-full group"
+                                    data-accordion-target="#parent-body-mc2" aria-expanded="false"
+                                    aria-controls="parent-body-mc2">
+                                    <label class="flex items-center justify-end gap-[16px] cursor-pointer ms-auto">
+                              
+                                        <div class="flex items-center gap-[10px] grow">
+                                            <input type="checkbox" placeholder="Search Folder / Document"
+                                                class="w-[13px] h-[13px] accent-[#704C9B]">
+                                        </div>
+                                    </label>
+                                    <div class="grow">
+                                        <h3
+                                            class="font-medium text-[#202732] text-[14px] flex items-center gap-[5px] line-clamp-1">
+                                            <img src="/public/img/folder.svg" alt=""> Product design Department
+                                        </h3>
+                                    </div>
+                                    <p class="text-[11px] font-normal text-[#4F607D] ms-auto whitespace-nowrap">24
+                                        document</p>
+                                    <button class=" cursor-pointer min-w-[12px]">
+                                        <img src="/public/img/accord-arrow.svg" alt=""
+                                            class="transition-transform duration-300 group-aria-expanded:rotate-90">
+                                    </button>
+                                </div>
+                            </div>
+
+                     
+                            <div id="parent-body-mc2" class="hidden">
+
+                                <label
+                                    class="flex items-center justify-start gap-[20px] cursor-pointer ms-auto border-b border-[#F5F5F5] p-[10px]">
+                                    
+                                    <div class="flex items-center gap-[10px]">
+                                        <input type="checkbox" placeholder="Search Folder / Document"
+                                            class="w-[13px] h-[13px] accent-[#704C9B]">
+                                    </div>
+                                    <p
+                                        class="text-[13px] font-normal text-[#202732] flex justify-start items-center gap-1">
+                                        <img src="/public/img/file.svg" alt=""> Leave policy.pdf
+                                    </p>
+                                </label>
+
+                                <label
+                                    class="flex items-center justify-start gap-[20px] cursor-pointer ms-auto border-b border-[#F5F5F5] p-[10px]">
+                                   
+                                    <div class="flex items-center gap-[10px]">
+                                        <input type="checkbox" placeholder="Search Folder / Document"
+                                            class="w-[13px] h-[13px] accent-[#704C9B]">
+                                    </div>
+                                    <p
+                                        class="text-[13px] font-normal text-[#202732] flex justify-start items-center gap-1">
+                                        <img src="/public/img/file.svg" alt=""> Dress code.pdf
+                                    </p>
+                                </label>
+
+                            </div>
+                        </div> -->
+                    
+
+                    </div>
+
+                    <div
+                        class="nodatafound h-full mt-[50px] hidden w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+                    
+                        <img src="/public/img/No data.svg" alt="">
+                    
+                        <p class="pt-4 text-base font-normal text-[#4F607D] ">It looks like there are no result that
+                            match your search</p>
+                    
+                    
+                    
+                    </div>
+                    <div
+                        class="norecordfound h-full mt-[50px] hidden w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+                    
+                        <img src="/public/img/add-folder.svg" alt="">
+                    
+                        <p class="pt-4 text-base font-normal text-[#4F607D] ">No folders or files are available in this channel</p>
+                    
+                    
+                    
+                    </div>
+                    <div
+                        class="nodatafound h-full mt-[50px] hidden w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+                    
+                        <img src="/public/img/No data.svg" alt="">
+                    
+                        <p class="pt-4 text-base font-normal text-[#4F607D] ">It looks like there are no result that
+                            match your search</p>
+                    
+                    
+                    
+                    </div>
+
+                </div>
+
+                <div class="flex gap-[10px] justify-end w-full sm:pt-[15px] p-[16px] sm:pb-[30px] sm:px-[30px]">
+                    <button command="close" commandfor="create-manage-content"
+                        class="bg-[#E0E4EB] h-[40px] max-w-max !px-[14px] flex items-center gap-[4px] rounded-[8px] text-[16px] leading-[20px] font-normal text-[#28303E] cursor-pointer border border-solid border-[#E0E4EB] hover:border-[#704C9B]">
+                        Cancel</button>
+                    <button
+                        class="filessavebtn dark-btn h-[40px] max-w-max !px-[14px] flex gap-[4px] rounded-[8px] text-[16px] leading-[20px] font-medium text-[#FFFFFF] ">
+                        Save
+                    </button>
+                </div>
+
+
+            </el-dialog-panel>
+        </div>
+    </dialog>
+</el-dialog>
+{{template "footer" .}}
+<script src="/public/js/agents/data_protection.js"></script>
+<!-- <script src="/public/js/script.js"></script> -->

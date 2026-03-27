@@ -1,0 +1,103 @@
+{{template "header" .}}
+
+    <div class="p-[32px_16px] xl:p-[35px_24px] min-h-[calc(100dvh-52px)] grid place-items-center ">
+                <div class="w-full max-w-[697px]">
+                    <h2 class="text-[24px] leading-[20px] font-bold text-[#202732] mb-[67px]">Profile setting</h2>
+                   
+                    <form name="userform" id="userform" method="post" action="/settings/updateprofile" enctype="multipart/form-data" >
+                    <div class="flex items-center gap-[24px] mb-[48px]">
+                        <div class="w-[80px] min-w-[80px] h-[80px] rounded-full overflow-hidden">
+                            <img src="{{if .user.ProfileImagePath}}{{.user.ProfileImagePath}} {{else}}/public/img/default-profile.svg {{end}}" alt="Profile Picture" width="80" height="80" id="profileImg" name="profileImg">
+                        </div>
+                        <div>
+                            <h3 class="text-base leading-[19px] font-semibold text-[#000000] mb-[4px]">Profile Picture
+                            </h3>
+                            <p class="text-[13px] leading-[16px] font-normal text-[#4F607D] mb-[14px]">We only support
+                                only JPEG, PNGs, and GIFs under 10MB</p>
+                                <input type="file" id="imgupload" name="prof_pic" class="hidden"
+                                    accept="image/png, image/jpeg, image/jpg">
+                                <label for="imgupload"
+                                    class="border hover:border-[#704C9B] cursor-pointer border-solid border-[#E0E4EB] bg-[#F9F9F9] p-[6px_12px] flex gap-[4px] text-sm leading-[17px] font-normal text-[#202732] rounded-[8px] w-fit">
+                                    <img src="/public/img/upload.svg" alt="upload"> Upload image
+                                </label>
+                            <!-- <button type="button"
+                                class="border hover:border-[#704C9B] cursor-pointer border-solid border-[#E0E4EB] bg-[#F9F9F9] p-[6px_12px] flex gap-[4px] text-sm leading-[17px] font-normal text-[#202732] rounded-[8px] ">
+                                <img src="/public/img/upload.svg" alt="upload" > <label for="imgupload">Upload image</label><input type="file" id="imgupload" name="prof_pic" class="hidden" accept="image/png, image/jpeg,image/jpg,image/svg"></button> -->
+                                
+                        </div>
+                    </div>
+
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-[12px] gap-y-[18px]">
+                        <div>
+                            <label class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">First
+                                name</label>
+                            <input type="text" placeholder="Enter" name="user_fname" value="{{.user.FirstName}}"
+                                class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[40px] block px-[16px] text-sm leading-[17px] font-normal placeholder:text-[#63789C] block w-full hover:outline-[4px] outline-[#f8ecfe] focus:border-[#704C9B]">
+                        </div>
+
+
+                        <div>
+                            <label class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">Last
+                                name</label>
+                            <input type="text" placeholder="Type a name" name="user_lname" value="{{.user.LastName}}"
+                                class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[40px] block px-[16px] text-sm leading-[17px] font-normal placeholder:text-[#63789C] block w-full hover:outline-[4px] outline-[#f8ecfe] focus:border-[#704C9B]">
+                        </div>
+
+
+                        <div>
+                            <label class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">Mobile
+                                Number</label>
+                            <input type="text" placeholder="Provide your role name" name="user_mob" value="{{.user.MobileNo}}"
+                                class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[40px] block px-[16px] text-sm leading-[17px] font-normal placeholder:text-[#63789C] block w-full hover:outline-[4px] outline-[#f8ecfe] focus:border-[#704C9B]">
+                        </div>
+
+
+                        <div>
+                            <label
+                                class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">Role</label>
+                            <input type="text" placeholder="Provide your role name" value="{{.rolename}}" readonly
+                                class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[40px] block px-[16px] text-sm leading-[17px] font-normal placeholder:text-[#63789C] block w-full hover:outline-[4px] outline-[#f8ecfe] focus:border-[#704C9B]">
+                        </div>
+
+
+                        <div class="sm:col-span-2">
+                            <label class="text-sm leading-[17px] font-semibold text-[#202732] block mb-[8px]">Email
+                                ID</label>
+                            <div class="flex items-center relative overflow-hidden rounded-[8px]">
+                                <input type="email" readonly name="user_email" value="{{.user.Email}}"
+                                    class="transition-all duration-200 border rounded-[8px] border-solid border-[#E0E4EB] h-[40px] block px-[16px] text-sm leading-[17px] font-normal text-[#3C485E] block w-full outline-none bg-[#F6F6F6]">
+                                <a href="/settings/changeemail"
+                                    class="absolute right-0 h-full p-[12px_20px] text-[13px] leading-[16px] font-medium text-[#63789C] cursor-pointer hover:bg-[#EBDAF3] hover:text-[#704C9B] transition-all duration-200">Change</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div>
+
+                            <input type="hidden" id="csrf"
+                                class="block w-full  h-[34px] bg-[#F7F7F5] rounded-[4px] p-[8px]" value="{{.csrf}}"
+                                name='csrf'>
+                        </div>
+                                <div>
+                                
+                                    <input type="hidden" id="id" name="id" class="block w-full  h-[34px] bg-[#F7F7F5] rounded-[4px] p-[8px]"
+                                        value="{{.user.Id}}">
+                                </div>
+                                <div>
+                                
+                                    <input type="hidden" id="cropData" name="crop_data" class="block w-full h-[34px] bg-[#F7F7F5] rounded-[4px] p-[8px]"
+                                        value="">
+                                </div>
+
+
+                  
+
+                        </form>
+                        <button id="profileupdatebutton"
+                            class="dark-btn h-[40px] !px-[20px] rounded-[8px] text-base leading-[20px] font-medium text-[#FFFFFF] max-w-max ms-auto mt-[30px]"> Update</button>
+                </div>
+            </div>
+        </section>
+ {{template "footer" .}}       
+   <!--feb  -->
+<script src="/public/js/settings/profilesetting.js"></script>

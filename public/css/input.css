@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=TASA+Orbiter:wght@400..800&display=swap');
+@import "tailwindcss";
+
+/* global.css */
+
+:root {
+  --header-bg: #ffffff;
+  --header-text: #3B4045;
+  --arrow-color: #3B4045;
+  --arrow-color-hover: #FF9C00;
+  --separator-color: #E0E5EA;
+  --logo-color: #3b4045;
+  --header-text-hover: #FF9C00;
+  --header-border: #E0E5EA;
+  --show-festival: none;
+  --burger-menu: #0e1729;
+}
+
+[data-theme="festival"] {
+  --header-bg: #064612;
+  --header-text: #ffffff;
+  --arrow-color: #FFFFFF;
+  --arrow-color-hover: #FFFFFF;
+  --separator-color: #FFFFFF3E;
+  --logo-color: #FFFFFF;
+  --header-text-hover: #ffffff;
+  --header-border: transparent;
+  --show-festival: block;
+  --burger-menu: #ffffff;
+}
+
+
+@theme {
+  --font-tasa: "TASA Orbiter", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-candara: "Candara", sans-serif;
+  --animate-blur: blur 1s ease-in-out forwards;
+  --animate-scroll-left: scroll-left 100s linear infinite;
+
+  --color-header-bg: var(--header-bg);
+  --color-header-text: var(--header-text);
+  --color-arrow-color: var(--arrow-color);
+  --color-arrow-color-hover: var(--arrow-color-hover);
+  --color-separator-color: var(--separator-color);
+  --color-logo-color: var(--logo-color);
+  --color-header-text-hover: var(--header-text-hover);
+  --color-header-border: var(--header-border);
+
+
+  @keyframes blur {
+
+    0% {
+      filter: blur(50px);
+    }
+
+    100% {
+      filter: blur(0px);
+    }
+  }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+.dark-btn {
+  @apply flex items-center justify-center text-[#ffffff] p-[0_14px] !bg-[#704C9B] cursor-pointer w-full;
+}
+
+
+
+.bordered-btn {
+  @apply flex items-center justify-center text-[14px] leading-[24px] font-medium text-[#202732] p-[0_14px] bg-white hover:bg-gray-50 cursor-pointer border border-solid border-[#EEF0F4] w-full;
+}
+
+
+.custom-cursor {
+  @apply fixed top-0 left-0 w-0 h-0 rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2 scale-0 duration-200 ease-in-out z-[9999] opacity-0;
+}
+
+
+.transform-element {
+  @apply opacity-0 translate-y-12 transition-all duration-1000 ease-in-out will-change-transform;
+}
+
+.transform-element.show {
+  @apply opacity-100 translate-y-0;
+}
+
+.screen-img {
+  @apply transition-all duration-700;
+}
+
+.wavy-link-container:hover .link__graphic--slide {
+  transform: translate3d(-66.6%, 0, 0);
+}
+
+.w-embed:before,
+.w-embed:after {
+  content: " ";
+  grid-area: 1/1/2/2;
+  display: table
+}
+
+.w-embed:after {
+  clear: both
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.link__graphic--slide {
+  stroke-width: 3px;
+  transition: transform 0.7s;
+  transition-timing-function:
+    cubic-bezier(0, 0.25, 0.5, 1);
+}
+
+.link__graphic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  fill: none;
+  stroke: #ffffff;
+}
+
+.link-animated {
+  white-space: nowrap;
+  text-decoration: none;
+  position: relative;
+}
+
+[drawer-backdrop] {
+  background-color: #10111250 !important;
+  transition: all 0.5s ease-in-out !important;
+}
+
+label.error {
+  color:#f26674;
+  font-size: 12px;
+}

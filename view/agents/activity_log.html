@@ -1,0 +1,119 @@
+{{template "header" .}}
+{{template "agentheader" .}}
+
+{{$assistant := .assistant}}
+
+                    <div id="default-styled-tab-content" class="grow flex flex-col">
+
+                      
+
+
+
+
+                        <div class="p-[16px] max-sm:p-[24px_16px] grow flex flex-col" id="styled-settings"
+                            role="tabpanel" aria-labelledby="settings-tab">
+                              {{if .ActivityLogList}}
+                            <div class="rounded-[8px] border border-solid border-[#D1DEF5] overflow-auto">
+                              
+                                <table class="w-full overflow-auto min-w-[768px]">
+                                    <thead>
+                                        <tr class="[&:last-of-type>td]:border-b-0">
+                                            <th
+                                                class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                                User</th>
+                                            <th
+                                                class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                                Mail ID</th>
+                                            <th
+                                                class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                                Role</th>
+                                            <th
+                                                class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                                Last Activity</th>
+                                            <th
+                                                class="p-[16px] bg-[#F2F3F5] text-sm leading-[17px] font-semibold text-[#4F607D] text-start">
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {{range .ActivityLogList}}
+                                        <tr class="[&:last-of-type>td]:border-b-0">
+                                            <td
+                                                class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                                <a href="/app/userchat/{{.Id}}?appid={{$assistant.UniqueId}}" class="flex items-center gap-[12px] hover:underline">
+                                                    <div
+                                                        class="w-[32px] min-w-[32px] h-[32px] rounded-full bg-[#0E6DBD] grid place-items-center">
+                                                        <p
+                                                            class="text-[18px] leading-[27px] font-medium text-[#FFFFFF] !no-underline">
+                                                            {{.NameString}}</p>
+                                                    </div>
+                                                    <p class="text-[13px] leading-[20px] font-semibold text-[#28303E]">
+                                                       {{.Username}}</p>
+                                                </a>
+                                            </td>
+                                            <td
+                                                class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                                {{.Email}}</td>
+                                            <td
+                                                class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                                {{.GroupName}}</td>
+                                            <td
+                                                class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                                {{.CreatedDate}}</td>
+                                            <td
+                                                class="p-[10px_16px] text-[13px] leading-[16px] font-normal text-[#3C485E] border-b border-solid border-[#E0E4EB] ">
+                                                <div class="flex gap-[14px] items-center">
+                                                    <a href="/app/userchat/{{.Id}}?appid={{$assistant.UniqueId}}" class="min-w-[20px]"><img
+                                                            src="/public/img/table-notification.svg" alt=""></a>
+                                                    <!-- <el-dropdown class="inline-flex">
+                                                        <button
+                                                            class="inline-flex w-[22px] hover:bg-[#F2F3F5] h-[22px] rounded cursor-pointer [[aria-expanded='true']]:bg-[#F2F3F5] ">
+                                                            <img src="/public/img/table-menu.svg" alt="">
+                                                        </button>
+
+                                                        <el-menu anchor="bottom end" popover
+                                                            class="w-[150px] origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+                                                            <div class="py-1">
+                                                                <a href="#"
+                                                                    class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Edit</a>
+                                                                <a href="#"
+                                                                    class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Delete</a>
+
+                                                            </div>
+                                                        </el-menu>
+                                                    </el-dropdown> -->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        
+                                       {{end}}
+                                    </tbody>
+                                </table>
+                                   
+                            </div>
+                             {{else}}
+                            
+                            
+                                           <div class="h-full w-full max-w-[400px] text-center mx-auto flex justify-center items-center flex-col">
+
+            <img src="/public/img/User.svg" alt="">
+            <h3 class="py-[30px_12px] text-[20px] font-semibold text-[#202124]">
+No activity logs found.</h3>
+            <p class="text-base font-normal text-[#4F607D] mb-[20px]">Add users and track their activities to populate this section.</p>
+           
+
+        </div>
+                                    
+                                    {{end}}
+                        </div>
+
+                     
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ {{template "footer" .}}   
+
