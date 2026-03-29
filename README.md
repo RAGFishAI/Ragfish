@@ -1,3 +1,25 @@
+## ❯ Ragfish
+
+Ragfish is an open-source, self-hosted AI platform that helps businesses turn their internal data into powerful, role-based AI assistants.
+
+With Ragfish, organizations can create knowledge channels, control access for teams, and enable AI-driven conversations based on their own data.
+
+### 💡 Why Ragfish?
+
+Most AI tools rely on external data and lack control.
+ Ragfish is built for businesses that need:
+
+🔐 Data privacy (self-hosted)
+👥 Role-based access control
+🧠 Context-aware AI using internal data
+⚙️ Full customization of AI behavior
+⚙️ Core Concepts
+📂 Channels
+
+Organize data into structured knowledge channels (e.g., Sales, HR, Support).
+
+Deploy Ragfish on your own server and start building AI assistants using your data.
+
 ## ❯  🚀 Easy to Deploy Ragfish on your server
 
 This is the official repository of Ragfish.You can easily deploy ragfish in your local server.
